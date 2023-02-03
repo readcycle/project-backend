@@ -28,10 +28,28 @@ describe("Check Users Routes", () => {
   });
   describe("Route : POST /users/login", () => {
     it("Should able to login properly", async () => {
-      const response = await request(app).post("/users/login");
+      const response = await request(app)
+        .post("/users/login")
+        .send({ email: "email", password: "password" });
       expect(response.statusCode).toBe(200);
+      expect(response.body).toHaveProperty("access_token");
+      expect(response.body.access_token).toEqual(expect.any(String));
+    });
+    it("Should not able to login with empty email field", async () => {
+      const response = await request(app)
+        .post("/users/login")
+        .send({ password: "password" });
+      expect(response.statusCode).toBe(400);
       expect(response.body).toHaveProperty("message");
-      expect(response.body.message).toBe("You successfully login");
+      expect(response.body.message).toBe("email field cannot be empty");
+    });
+    it("Should not able to login with empty password field", async () => {
+      const response = await request(app)
+        .post("/users/login")
+        .send({ email: "email" });
+      expect(response.statusCode).toBe(400);
+      expect(response.body).toHaveProperty("message");
+      expect(response.body.message).toBe("password field cannot be empty");
     });
   });
   describe("Route : PUT /users/:id", () => {
