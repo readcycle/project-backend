@@ -4,15 +4,24 @@ class UserController {
   }
 
   static getUserById(req, res, next) {
-    res.status(200).json({ message: "Success get user" });
+    const { id } = req.params;
+    res.status(200).json({ message: `Success get user with id : ${id}` });
   }
 
   static userEditProfile(req, res, next) {
-    res.status(200).json({ message: "Success edit user profile" });
+    const { id } = req.params;
+    res
+      .status(200)
+      .json({ message: `Success edit user profile with id : ${id}` });
   }
 
   static userIsBannedStatus(req, res, next) {
-    res.status(200).json({ message: "Success update isBanned status" });
+    const { id } = req.params;
+    res
+      .status(200)
+      .json({
+        message: `Success update isBanned status of user with id : ${id}`,
+      });
   }
 }
 
@@ -22,7 +31,7 @@ class UserAuthenticationController {
   }
 
   static userRegister(req, res, next) {
-    res.status(201).json({ message: "You succesfully register" });
+    res.status(201).json({ message: "You successfully register" });
   }
 }
 

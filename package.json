@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --runInBand --forceExit",
+    "test": "jest --runInBand --forceExit --coverage",
     "dev": "nodemon app.js",
     "start": "node app.js"
   },
@@ -20,8 +20,11 @@
   },
   "homepage": "https://github.com/readcycle/project-backend#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
     "pg": "^8.9.0",
     "sequelize": "^6.28.0"
   },
