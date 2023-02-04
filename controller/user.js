@@ -5,7 +5,7 @@ const { User, Sequelize, sequelize } = require("../models");
 class UserController {
   static async getAllUsers(req, res, next) {
     try {
-      const { queryLoc } = req.query;
+      const { queryLoc, distance = 1000 } = req.query;
       const optionQuery = {
         attributes: { exclude: ["password"] },
       };
@@ -16,7 +16,7 @@ class UserController {
             "ST_DWithin",
             sequelize.col("location"),
             sequelize.fn("ST_GeomFromText", `POINT(${longitude} ${latitute})`),
-            1000,
+            distance,
             true
           ),
           true
