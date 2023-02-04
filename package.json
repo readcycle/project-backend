@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --runInBand --forceExit --coverage",
+    "test": "jest --runInBand --forceExit --coverage --silent",
     "dev": "nodemon app.js",
     "start": "node app.js"
   },

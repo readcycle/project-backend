@@ -45,20 +45,15 @@ class UserController {
   static async userEditProfile(req, res, next) {
     try {
       const { id } = req.params;
-      const { fullname, phoneNumber, city, favoriteBook, favoriteGenre } =
-        req.body;
-      const data = await User.findByPk(id);
+      const { phoneNumber, city, favoriteBook, favoriteGenre } = req.body;
+      const data = await User.findOne({ where: { id } });
       if (!data) throw { name: "not_found" };
-      data.set({
-        fullname,
+      await data.update({
         phoneNumber,
         city,
         favoriteBook,
         favoriteGenre,
       });
-      const { isNewRecord } = await data.save();
-      if (!isNewRecord) throw { name: "email_edit_fail" };
-      console.log(isNewRecord);
       res
         .status(200)
         .json({ message: `Success edit user profile with id : ${id}` });
