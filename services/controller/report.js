@@ -7,8 +7,12 @@ class ReportController {
             const { reportedId } = req.params
             const { title, content } = req.body
 
+            console.log(reportedId);
+            console.log(req.user.id);
+            console.log(title, content);
+
             const reportedUser = await User.findByPk(reportedId)
-            if(!reportedUser) throw { name: 'DataNotFound' }
+            if(!reportedUser) throw { name: 'user_not_found' }
 
             const report = await Report.create({ 
                 title, 
@@ -27,8 +31,8 @@ class ReportController {
         try {
             const reports = await Report.findAll({
                 include: [
-                    {model: User, attributes: ['username'], as: 'Reporter'},
-                    {model: User, attributes: ['username'], as: 'Reported'}
+                    {model: User, attributes: ['fullname'], as: 'Reporter'},
+                    {model: User, attributes: ['fullname'], as: 'Reported'}
                 ]
             })
 
@@ -42,11 +46,11 @@ class ReportController {
         try {
             const report = await Report.findByPk(req.params.id, {
                 include: [
-                    {model: User, attributes: ['username'], as: 'Reporter'},
-                    {model: User, attributes: ['username'], as: 'Reported'}
+                    {model: User, attributes: ['fullname'], as: 'Reporter'},
+                    {model: User, attributes: ['fullname'], as: 'Reported'}
                 ]
             })
-            if(!report) throw { name: "DataNotFound" }
+            if(!report) throw { name: "report_not_found" }
 
             res.status(200).json(report)
         } catch (error) {
@@ -57,7 +61,7 @@ class ReportController {
     static async updateReport(req, res, next){
         try {
             const report = await Report.findByPk(req.params.id)
-            if(!report) throw { name: "DataNotFound" }
+            if(!report) throw { name: "report_not_found" }
 
             await Report.update({isSolved: !report.isSolved}, {where: {id: req.params.id}})
             

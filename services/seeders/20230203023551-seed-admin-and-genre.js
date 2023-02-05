@@ -1,6 +1,6 @@
 'use strict';
 
-const { hashPwd } = require('../helpers/bcrypt');
+const { funcHashValue } = require('../helper/bcryptHandler');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -10,7 +10,7 @@ module.exports = {
    await queryInterface.bulkInsert('Admins', [
     {
       email: "alpha@mail.com",
-      password: hashPwd("alpha"),
+      password: funcHashValue("alpha"),
       createdAt: new Date(),
       updatedAt: new Date()
     }
@@ -25,21 +25,6 @@ module.exports = {
     },
     {
       name: 'Science',
-      createdAt: new Date(),
-      updatedAt: new Date()
-    }
-   ])
-
-   //Seed for Users Table
-   await queryInterface.bulkInsert('Users', [
-    {
-      username: "User 1",
-      email: "user1@mail.com",
-      password: hashPwd("user1"),
-      phoneNumber: "888888",
-      city: "Jakarta",
-      favoriteGenre: "Philosophy",
-      favoriteBook: "The Good Life",
       createdAt: new Date(),
       updatedAt: new Date()
     }

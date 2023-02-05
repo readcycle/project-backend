@@ -1,6 +1,6 @@
 const { Admin, Report, User } = require('../models')
-const { comparePwd } = require('../helpers/bcrypt')
-const { encode } = require('../helpers/jwt')
+const { funcValidateHash } = require('../helper/bcryptHandler')
+const { tokenize } = require('../helper/jwtHandler')
 
 class Administrator {
     
@@ -18,17 +18,19 @@ class Administrator {
     static async login(req, res, next){
         try {
             const { email, password } = req.body
-            if(!email) throw { name: "RequiredEmailLogin" }
-            if(!password) throw { name: "RequiredPasswordLogin" }
+            if(!email) throw { name: "not_found" }
+            if(!password) throw { name: "empty_email" }
 
             const admin = await Admin.findOne({where: {email}})
-            if(!admin) throw { name: "InvalidLogin" }
+            console.log(admin);
+            if(!admin) throw { name: "wrong_email_password" }
 
-            const validPwd = comparePwd(password, admin.password)
-            if(!validPwd) throw { name: "InvalidLogin" }
+            const validPwd = funcValidateHash(admin.password, password)
+            console.log(validPwd);
+            if(!validPwd) throw { name: "wrong_email_password" }
 
             res.status(200).json({
-                access_token: encode({ id: admin.id }),
+                access_token: tokenize({ id: admin.id, email }),
                 email: admin.email
             })
         } catch (error) {
