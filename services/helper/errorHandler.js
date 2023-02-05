@@ -36,6 +36,11 @@ const funcErrorHandler = (err, req, res, next) => {
     message = "Email is taken already";
   }
 
+  if (err.name === "InvalidToken") {
+    code = 403;
+    message = "Invalid token";
+  }
+
   res.status(code).json({ message });
 };
 

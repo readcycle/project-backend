@@ -1,6 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
-const { hashPwd } = require("../helpers/bcrypt");
+const { funcHashValue } = require("../helper/bcryptHandler");
+// const { hashPwd } = require("../helpers/bcrypt");
 module.exports = (sequelize, DataTypes) => {
   class Admin extends Model {
     /**
@@ -40,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   Admin.addHook("beforeCreate", (admin) => {
-    admin.password = hashPwd(admin.password);
+    admin.password = funcHashValue(admin.password);
   });
 
   return Admin;
