@@ -10,12 +10,14 @@ class UserController {
         attributes: { exclude: ["password"] },
       };
       if (queryLoc) {
-        const [latitute, longitude] = queryLoc.split(",");
+        const [latitude, longitude] = queryLoc.split(",");
+        if (!latitude) throw { name: "empty_latitude" };
+        if (!longitude) throw { name: "empty_longitude" };
         optionQuery.where = sequelize.where(
           sequelize.fn(
             "ST_DWithin",
             sequelize.col("location"),
-            sequelize.fn("ST_GeomFromText", `POINT(${longitude} ${latitute})`),
+            sequelize.fn("ST_GeomFromText", `POINT(${longitude} ${latitude})`),
             distance,
             true
           ),

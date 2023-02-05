@@ -82,13 +82,39 @@ afterAll(async () => {
 
 describe("Check Users Routes", () => {
   describe("Route : GET /users", () => {
-    it("Should able to get all listed books in database", async () => {
+    it("Should able to get all listed users in database", async () => {
       const response = await request(app).get("/users");
       expect(response.statusCode).toBe(200);
       expect(response.body).toEqual(expect.any(Array));
       response.body.forEach((el) => {
         expect(el).toHaveProperty("id");
       });
+    });
+    it("Should able to get all nearest users in database", async () => {
+      const response = await request(app).get(
+        "/users?queryLoc=-6.241247906043303,106.84081593559185&distance=1000000"
+      );
+      expect(response.statusCode).toBe(200);
+      expect(response.body).toEqual(expect.any(Array));
+      response.body.forEach((el) => {
+        expect(el).toHaveProperty("id");
+      });
+    });
+    it("Should not able get all nearest users with empty longitude param", async () => {
+      const response = await request(app).get(
+        "/users?queryLoc=-6.241247906043303,&distance=1000000"
+      );
+      expect(response.statusCode).toBe(400);
+      expect(response.body).toHaveProperty("message");
+      expect(response.body.message).toBe("Longitude param cannot be empty");
+    });
+    it("Should not able get all nearest users with empty latitude param", async () => {
+      const response = await request(app).get(
+        "/users?queryLoc=,106.84081593559185&distance=1000000"
+      );
+      expect(response.statusCode).toBe(400);
+      expect(response.body).toHaveProperty("message");
+      expect(response.body.message).toBe("Latitude param cannot be empty");
     });
   });
   describe("Route : GET /users/:id", () => {
@@ -250,6 +276,14 @@ describe("Check Users Routes", () => {
         "Success edit user profile with id : 1"
       );
     });
+    it("Should not able edit user with invalid id", async () => {
+      const response = await request(app).put("/users/9999").send({
+        city: "Medan",
+      });
+      expect(response.statusCode).toBe(404);
+      expect(response.body).toHaveProperty("message");
+      expect(response.body.message).toBe("Data not found");
+    });
   });
   describe("Route : PATCH /users/:id", () => {
     it("Should able to update isBanned status of user", async () => {
@@ -259,6 +293,12 @@ describe("Check Users Routes", () => {
       expect(response.body.message).toBe(
         "Success update isBanned status of user with id : 1"
       );
+    });
+    it("Should not able update isBanned status of user with invalid id", async () => {
+      const response = await request(app).patch("/users/9999");
+      expect(response.statusCode).toBe(404);
+      expect(response.body).toHaveProperty("message");
+      expect(response.body.message).toBe("Data not found");
     });
   });
 });
