@@ -1,4 +1,4 @@
-const PostController = require("../controllers/post");
+const PostController = require("../controller/post");
 const router = require("express").Router();
 
 router.get("/", PostController.find);

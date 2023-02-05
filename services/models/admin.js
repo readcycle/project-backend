@@ -1,8 +1,6 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
-const { hashPwd } = require('../helpers/bcrypt')
+"use strict";
+const { Model } = require("sequelize");
+const { hashPwd } = require("../helpers/bcrypt");
 module.exports = (sequelize, DataTypes) => {
   class Admin extends Model {
     /**
@@ -14,43 +12,36 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  Admin.init({
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: {msg: "Email is required"},
-        notNull: {msg: "Email is required"},
-        isEmail: {args: true, msg: "Invalid format email"},
-        isUnique(value, next){
-          Admin.findAll({
-            where: {email: value},
-            attributes: ['id']
-          })
-          .then(admin => {
-            if(admin.length != 0) next(new Error("Email must be unique"))
-            next()
-          })
-          .catch(error => next(error))
-        }
-      }
+  Admin.init(
+    {
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: { msg: "Email must be unique" },
+        validate: {
+          notEmpty: { msg: "Email is required" },
+          notNull: { msg: "Email is required" },
+          isEmail: { msg: "Invalid format email" },
+        },
+      },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: { msg: "Password is required" },
+          notNull: { msg: "Password is required" },
+        },
+      },
     },
-    password: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: {msg: "Password is required"},
-        notNull: {msg: "Password is required"}
-      }
+    {
+      sequelize,
+      modelName: "Admin",
     }
-  }, {
-    sequelize,
-    modelName: 'Admin',
-  });
+  );
 
-  Admin.addHook("beforeCreate", admin => {
-    admin.password = hashPwd(admin.password)
-  })
+  Admin.addHook("beforeCreate", (admin) => {
+    admin.password = hashPwd(admin.password);
+  });
 
   return Admin;
 };

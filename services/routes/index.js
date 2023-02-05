@@ -9,7 +9,10 @@ router.get("/", (req, res) => {
   res.status(200).json({ message: "ok" });
 });
 
-router.use("/", adminRouter);
+router.use("/", adminRouter); // ! Wrong type
+// router.use('/admins')
+// router.use('/genres')
+// router.use('/reports')
 router.use("/books", bookRouter);
 router.use("/users", userRouter);
 router.use("/bids", bidRouter);
