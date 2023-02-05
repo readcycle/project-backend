@@ -1,24 +1,12 @@
 const app = require("../app");
 const request = require("supertest");
-const { Post, sequelize } = require("../models");
+const { Post } = require("../models");
 
 const data = require("../db.json").posts;
-const {
-  title,
-  author,
-  condition,
-  description,
-  UserId,
-  GenreId,
-  isClosed,
-  imageUrl,
-} = data[0];
+const { BookId, condition, description, UserId, isClosed, imageUrl } = data[0];
+let post;
 
 describe("Post Endpoint Test", () => {
-  beforeAll(() => {
-    return sequelize.queryInterface.bulkInsert("Posts", data);
-  });
-
   test("GET /posts => return array of post", async () => {
     const response = await request(app).get("/posts");
 
@@ -52,12 +40,9 @@ describe("Post Endpoint Test", () => {
 
     expect(response.status).toBe(200);
     expect(response.body).toBeInstanceOf(Object);
-    expect(response.body).toHaveProperty("title", expect.any(String));
-    expect(response.body).toHaveProperty("author", expect.any(String));
     expect(response.body).toHaveProperty("condition", expect.any(Number));
     expect(response.body).toHaveProperty("description", expect.any(String));
     expect(response.body).toHaveProperty("UserId", expect.any(Number));
-    expect(response.body).toHaveProperty("GenreId", expect.any(Number));
     expect(response.body).toHaveProperty("isClosed", expect.any(Boolean));
     expect(response.body).toHaveProperty("imageUrl", expect.any(String));
   });
@@ -75,76 +60,30 @@ describe("Post Endpoint Test", () => {
 
   test("POST /posts => create post based on input", async () => {
     const response = await request(app).post(`/posts`).send({
-      title,
-      author,
       condition,
       description,
       UserId,
-      GenreId,
+      BookId,
       isClosed,
       imageUrl,
     });
+    post = response.body;
 
     expect(response.status).toBe(201);
     expect(response.body).toBeInstanceOf(Object);
-    expect(response.body).toHaveProperty("title", data[0].title);
-    expect(response.body).toHaveProperty("author", data[0].author);
     expect(response.body).toHaveProperty("condition", data[0].condition);
     expect(response.body).toHaveProperty("description", data[0].description);
     expect(response.body).toHaveProperty("UserId", data[0].UserId);
-    expect(response.body).toHaveProperty("GenreId", data[0].GenreId);
     expect(response.body).toHaveProperty("isClosed", data[0].isClosed);
     expect(response.body).toHaveProperty("imageUrl", data[0].imageUrl);
   });
 
-  test("POST /posts => return 400 should not create due to empty title", async () => {
-    const response = await request(app).post("/posts").send({
-      title: "",
-      author,
-      condition,
-      description,
-      UserId,
-      GenreId,
-      isClosed,
-      imageUrl,
-    });
-
-    expect(response.status).toBe(400);
-    expect(response.body).toBeInstanceOf(Object);
-    expect(response.body).toHaveProperty(
-      "message",
-      expect.stringContaining("Title is required")
-    );
-  });
-
-  test("POST /posts => return 400 should not create due to empty author", async () => {
-    const response = await request(app).post("/posts").send({
-      title,
-      author: "",
-      condition,
-      description,
-      UserId,
-      GenreId,
-      isClosed,
-      imageUrl,
-    });
-
-    expect(response.status).toBe(400);
-    expect(response.body).toBeInstanceOf(Object);
-    expect(response.body).toHaveProperty(
-      "message",
-      expect.stringContaining("Author is required")
-    );
-  });
-
   test("POST /posts => return 400 should not create due to empty condition", async () => {
     const response = await request(app).post("/posts").send({
-      title,
-      author,
       condition: null,
       description,
       UserId,
-      GenreId,
+      BookId,
       isClosed,
       imageUrl,
     });
@@ -159,12 +98,10 @@ describe("Post Endpoint Test", () => {
 
   test("POST /posts => return 400 should not create due to empty description", async () => {
     const response = await request(app).post("/posts").send({
-      title,
-      author,
       condition,
-      description: "",
+      description: null,
       UserId,
-      GenreId,
+      BookId,
       isClosed,
       imageUrl,
     });
@@ -179,14 +116,12 @@ describe("Post Endpoint Test", () => {
 
   test("POST /posts => return 400 should not create due to empty image", async () => {
     const response = await request(app).post("/posts").send({
-      title,
-      author,
       condition,
       description,
       UserId,
-      GenreId,
+      BookId,
       isClosed,
-      imageUrl: "",
+      imageUrl: null,
     });
 
     expect(response.status).toBe(400);
@@ -197,50 +132,19 @@ describe("Post Endpoint Test", () => {
     );
   });
 
-  test("PUT /posts/:id => return successful message", async () => {
-    const response = await request(app).put("/posts/5").send({
-      title,
-      author,
-      condition,
-      description,
-      UserId,
-      GenreId,
-      isClosed,
-      imageUrl,
-    });
-
-    expect(response.status).toBe(200);
-    expect(response.body).toBeInstanceOf(Object);
-    expect(response.body).toHaveProperty(
-      "message",
-      "Edit Sucessfull for post with id 5"
-    );
-  });
-
-  test("PUT /posts/:id => return 404 not found", async () => {
-    const response = await request(app).put("/posts/99");
-
-    expect(response.status).toBe(404);
-    expect(response.body).toBeInstanceOf(Object);
-    expect(response.body).toHaveProperty(
-      "message",
-      expect.stringContaining("Post not found")
-    );
-  });
-
   test("PATCH /posts/Lid => return successful message", async () => {
-    const response = await request(app).patch("/posts/1");
+    const response = await request(app).patch(`/posts/${post.id}`);
 
     expect(response.status).toBe(200);
     expect(response.body).toBeInstanceOf(Object);
     expect(response.body).toHaveProperty(
       "message",
-      "Status of post with id 1 is changed successfully"
+      `Status of post with id ${post.id} is changed successfully`
     );
   });
 
   test("PATCH /posts/Lid => return 404 not found", async () => {
-    const response = await request(app).put("/posts/99");
+    const response = await request(app).put("/posts/999");
 
     expect(response.status).toBe(404);
     expect(response.body).toBeInstanceOf(Object);
@@ -251,18 +155,18 @@ describe("Post Endpoint Test", () => {
   });
 
   test("DELETE /posts/:id => return successful message", async () => {
-    const response = await request(app).delete("/posts/1");
+    const response = await request(app).delete(`/posts/${post.id}`);
 
     expect(response.status).toBe(200);
     expect(response.body).toBeInstanceOf(Object);
     expect(response.body).toHaveProperty(
       "message",
-      "Post with id 1 is deleted"
+      `Post with id ${post.id} is deleted`
     );
   });
 
   test("DELETE /posts/:id => return 404 not found", async () => {
-    const response = await request(app).delete("/posts/99");
+    const response = await request(app).delete("/posts/999");
 
     expect(response.status).toBe(404);
     expect(response.body).toBeInstanceOf(Object);
@@ -270,12 +174,5 @@ describe("Post Endpoint Test", () => {
       "message",
       expect.stringContaining("Post not found")
     );
-  });
-
-  afterAll(() => {
-    return sequelize.queryInterface.bulkDelete("Posts", null, {
-      truncate: true,
-      restartIdentity: true,
-    });
   });
 });

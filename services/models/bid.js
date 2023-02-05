@@ -1,7 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Post extends Model {
+  class Bid extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -11,17 +11,9 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  Post.init(
+  Bid.init(
     {
       BookId: DataTypes.INTEGER,
-      condition: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        validate: {
-          notEmpty: { msg: "Condition is required" },
-          notNull: { msg: "Condition is required" },
-        },
-      },
       description: {
         type: DataTypes.TEXT,
         allowNull: false,
@@ -30,8 +22,15 @@ module.exports = (sequelize, DataTypes) => {
           notNull: { msg: "Description is required" },
         },
       },
+      condition: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notEmpty: { msg: "Condition is required" },
+          notNull: { msg: "Condition is required" },
+        },
+      },
       UserId: DataTypes.INTEGER,
-      isClosed: DataTypes.BOOLEAN,
       imageUrl: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -40,11 +39,12 @@ module.exports = (sequelize, DataTypes) => {
           notNull: { msg: "Image is required" },
         },
       },
+      PostId: DataTypes.STRING,
     },
     {
       sequelize,
-      modelName: "Post",
+      modelName: "Bid",
     }
   );
-  return Post;
+  return Bid;
 };

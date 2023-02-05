@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Posts", {
+    await queryInterface.createTable("Books", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -15,23 +15,11 @@ module.exports = {
       author: {
         type: Sequelize.STRING,
       },
-      condition: {
-        type: Sequelize.INTEGER,
-      },
-      description: {
-        type: Sequelize.TEXT,
-      },
-      UserId: {
-        type: Sequelize.INTEGER,
-      },
       GenreId: {
         type: Sequelize.INTEGER,
-      },
-      isClosed: {
-        type: Sequelize.BOOLEAN,
-      },
-      imageUrl: {
-        type: Sequelize.STRING,
+        references: { model: { tableName: "Genres" }, key: "id" },
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
       },
       createdAt: {
         allowNull: false,
@@ -44,6 +32,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Posts");
+    await queryInterface.dropTable("Books");
   },
 };
