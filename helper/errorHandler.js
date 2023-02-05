@@ -11,7 +11,10 @@ const funcErrorHandler = (err, req, res, next) => {
     message = err.errors[0].message;
   }
 
-  if (err.name === "not_found") {
+  if (
+    err.name === "not_found" ||
+    err.name === "SequelizeForeignKeyConstraintError"
+  ) {
     code = 404;
     message = "Data not found";
   }
