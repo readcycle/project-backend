@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Report extends Model {
     /**
@@ -11,33 +9,34 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Report.belongsTo(models.User, {foreignKey: 'reporterId', as: 'Reporter'})
-      Report.belongsTo(models.User, {foreignKey: 'reportedId', as: 'Reported'})
     }
   }
-  Report.init({
-    title: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: {msg: "Title is required"},
-        notNull: {msg: "Title is required"}
-      }
+  Report.init(
+    {
+      title: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: { msg: "Title is required" },
+          notNull: { msg: "Title is required" },
+        },
+      },
+      content: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: { msg: "Content is required" },
+          notNull: { msg: "Content is required" },
+        },
+      },
+      reporterId: DataTypes.INTEGER,
+      reportedId: DataTypes.INTEGER,
+      isSolved: DataTypes.BOOLEAN,
     },
-    content: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: {msg: "Content is required"},
-        notNull: {msg: "Content is required"}
-      }
-    },
-    reporterId: DataTypes.INTEGER,
-    reportedId: DataTypes.INTEGER,
-    isSolved: DataTypes.BOOLEAN
-  }, {
-    sequelize,
-    modelName: 'Report',
-  });
+    {
+      sequelize,
+      modelName: "Report",
+    }
+  );
   return Report;
 };
