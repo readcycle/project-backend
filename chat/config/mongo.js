@@ -2,14 +2,14 @@ const { MongoClient } = require("mongodb");
 const uri = process.env.MONGO_URI || "mongodb://localhost:27017";
 const client = new MongoClient(uri);
 
-let chats, messages;
+let db, chats, messages;
 
 async function connect() {
   try {
     await client.connect();
     console.log("MongoDB connected...");
 
-    const db = client.db("chatDB");
+    db = client.db("chatDB");
     chats = db.collection("chats");
     messages = db.collection("messages");
   } catch (error) {
@@ -17,8 +17,8 @@ async function connect() {
   }
 }
 
-function getCollection() {
-  return { chats, messages };
+function getDB() {
+  return db;
 }
 
-module.exports = { getCollection, connect };
+module.exports = { getDB, connect };
