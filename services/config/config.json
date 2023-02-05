@@ -2,15 +2,15 @@
   "development": {
     "username": "postgres",
     "password": "postgres",
-    "database": "readcycle",
-    "host": "localhost",
+    "database": "readcycle_dev",
+    "host": "127.0.0.1",
     "dialect": "postgres"
   },
   "test": {
     "username": "postgres",
     "password": "postgres",
     "database": "readcycle_test",
-    "host": "localhost",
+    "host": "127.0.0.1",
     "dialect": "postgres"
   },
   "production": {
