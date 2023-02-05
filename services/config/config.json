@@ -2,14 +2,14 @@
   "development": {
     "username": "postgres",
     "password": "postgres",
-    "database": "readcycle_dev",
+    "database": "dev_readcycle_dev",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
   "test": {
     "username": "postgres",
     "password": "postgres",
-    "database": "readcycle_test",
+    "database": "dev_readcycle_test",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },

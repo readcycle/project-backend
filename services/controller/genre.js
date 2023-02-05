@@ -15,7 +15,7 @@ class GenreController {
   static async getGenreById(req, res, next) {
     try {
       const genre = await Genre.findByPk(req.params.id);
-      if (!genre) throw { name: "DataNotFound" };
+      if (!genre) throw { name: "not_found" };
 
       res.status(200).json(genre);
     } catch (error) {
