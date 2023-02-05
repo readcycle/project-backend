@@ -1,5 +1,5 @@
 const funcErrorHandler = (err, req, res, next) => {
-  console.log(err);
+  // console.log(err);
   let code = 500;
   let message = "Internal server error";
 
@@ -7,7 +7,7 @@ const funcErrorHandler = (err, req, res, next) => {
     err.name === "SequelizeValidationError" ||
     err.name === "SequelizeUniqueConstraintError"
   ) {
-    code = 404;
+    code = 400;
     message = err.errors[0].message;
   }
 
