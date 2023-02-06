@@ -1,8 +1,7 @@
-const router = require('express').Router()
-const GenreController = require('../controller/genre')
-const { authAdmin } = require("../middlewares/authentication");
+const router = require("express").Router();
+const GenreController = require("../controller/genre");
 
-router.get("/", authAdmin, GenreController.getGenres);
-router.get("/:id", authAdmin, GenreController.getGenreById);
+router.get("/", GenreController.getGenres);
+router.get("/:id", GenreController.getGenreById);
 
-module.exports = router
+module.exports = router;

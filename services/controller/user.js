@@ -36,6 +36,7 @@ class UserController {
         attributes: { exclude: ["password"] },
       });
       if (!data) throw { name: "not_found" };
+
       res.status(200).json(data);
     } catch (error) {
       next(error);
@@ -73,7 +74,7 @@ class UserController {
       const data = await User.findByPk(id);
       if (!data) throw { name: "not_found" };
       data.set({
-        isBanned: !data.isBanned,
+        isBanned: true,
       });
       await data.save();
       res.status(200).json({

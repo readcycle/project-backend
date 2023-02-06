@@ -1,5 +1,5 @@
 const funcErrorHandler = (err, req, res, next) => {
-  console.log(err);
+  // console.log(err);
   let code = 500;
   let message = "Internal server error";
 
@@ -33,12 +33,12 @@ const funcErrorHandler = (err, req, res, next) => {
 
   if (err.name === "empty_email") {
     code = 400;
-    message = "email field cannot be empty";
+    message = "Email is required";
   }
 
   if (err.name === "empty_password") {
     code = 400;
-    message = "password field cannot be empty";
+    message = "Password is required";
   }
 
   if (err.name === "wrong_email_password") {

@@ -97,7 +97,7 @@
       "imageUrl": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1631251689i/4214.jpg",
       "createdAt": "2023-02-05T00:00:00Z",
       "updatedAt": "2023-02-05T00:00:00Z",
-      "PostId": 1
+      "PostId": 3
     },
     {
       "BookId": 3,
@@ -107,7 +107,7 @@
       "imageUrl": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1351051208i/1420.jpg",
       "createdAt": "2023-02-05T00:00:00Z",
       "updatedAt": "2023-02-05T00:00:00Z",
-      "PostId": 1
+      "PostId": 4
     },
     {
       "BookId": 1,
@@ -117,7 +117,7 @@
       "imageUrl": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1331563731i/12938.jpg",
       "createdAt": "2023-02-05T00:00:00Z",
       "updatedAt": "2023-02-05T00:00:00Z",
-      "PostId": 1
+      "PostId": 5
     },
     {
       "BookId": 5,
@@ -127,7 +127,7 @@
       "imageUrl": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1546081115i/12985.jpg",
       "createdAt": "2023-02-05T00:00:00Z",
       "updatedAt": "2023-02-05T00:00:00Z",
-      "PostId": 1
+      "PostId": 2
     },
     {
       "BookId": 4,
@@ -137,7 +137,7 @@
       "imageUrl": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1629680008i/18135.jpg",
       "createdAt": "2023-02-05T00:00:00Z",
       "updatedAt": "2023-02-05T00:00:00Z",
-      "PostId": 1
+      "PostId": 3
     }
   ]
 }
