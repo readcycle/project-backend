@@ -85,7 +85,7 @@ describe("API Admin", () => {
       expect(response.status).toBe(401);
       expect(response.body).toHaveProperty(
         "message",
-        "Wrong email or password"
+        "Invalid email or password"
       );
     });
 
@@ -98,7 +98,7 @@ describe("API Admin", () => {
       expect(response.status).toBe(401);
       expect(response.body).toHaveProperty(
         "message",
-        "Wrong email or password"
+        "Invalid email or password"
       );
     });
   });

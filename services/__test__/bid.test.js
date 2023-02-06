@@ -1,8 +1,13 @@
 const request = require("supertest");
 const app = require("../app");
+const { Bid } = require("../models");
 
 const data = require("../db.json").bids;
-const { BookId, condition, description, UserId, PostId, imageUrl } = data[0];
+const { BookId, condition, description, UserId, PostId, imageUrl } = data[3];
+
+beforeAll(() => {
+  jest.restoreAllMocks();
+});
 
 describe("Bids Endpoint Test", () => {
   it("GET /bids => return array of bids", async () => {
@@ -56,11 +61,11 @@ describe("Bids Endpoint Test", () => {
 
     expect(response.statusCode).toBe(201);
     expect(response.body).toBeInstanceOf(Object);
-    expect(response.body).toHaveProperty("condition", data[0].condition);
-    expect(response.body).toHaveProperty("description", data[0].description);
-    expect(response.body).toHaveProperty("UserId", data[0].UserId);
-    expect(response.body).toHaveProperty("PostId", data[0].PostId);
-    expect(response.body).toHaveProperty("imageUrl", data[0].imageUrl);
+    expect(response.body).toHaveProperty("condition", data[3].condition);
+    expect(response.body).toHaveProperty("description", data[3].description);
+    expect(response.body).toHaveProperty("UserId", data[3].UserId);
+    expect(response.body).toHaveProperty("PostId", data[3].PostId);
+    expect(response.body).toHaveProperty("imageUrl", data[3].imageUrl);
   });
 
   it("POST /bids => return 400 should not create new bids", async () => {
@@ -71,5 +76,17 @@ describe("Bids Endpoint Test", () => {
     expect(response.status).toBe(400);
     expect(response.body).toBeInstanceOf(Object);
     expect(response.body).toHaveProperty("message");
+  });
+
+  test("GET /bids => return 500 internal server error", async () => {
+    jest.spyOn(Bid, "findAll").mockRejectedValue({ message: "lalalala" });
+    const response = await request(app).get("/bids");
+
+    expect(response.status).toBe(500);
+    expect(response.body).toBeInstanceOf(Object);
+    expect(response.body).toHaveProperty(
+      "message",
+      expect.stringContaining("Internal server error")
+    );
   });
 });
