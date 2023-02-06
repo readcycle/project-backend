@@ -16,16 +16,11 @@ class Message {
     return await this.msgCollection().findOne({ _id: ObjectId(id) });
   }
 
-  static async create(id, message) {
+  static async create(id, message, chatId) {
     return await this.msgCollection().insertOne({
       senderId: id,
       message,
-    });
-  }
-
-  static async update(id, latestMsg) {
-    return await this.msgCollection({ _id: ObjectId(id) }, null, {
-      $set: { latestMsg },
+      chatId: ObjectId(chatId),
     });
   }
 }
