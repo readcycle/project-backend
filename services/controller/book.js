@@ -12,9 +12,9 @@ class BookController {
   }
 
   static async getBookById(req, res, next) {
-    const { bookId } = req.params;
+    const { id } = req.params;
     try {
-      const book = await Book.findByPk(bookId);
+      const book = await Book.findByPk(+id);
       if (!book) throw { name: "book_not_found" };
 
       res.status(200).json(book);

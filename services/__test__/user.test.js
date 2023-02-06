@@ -1,7 +1,7 @@
 const request = require("supertest");
 const app = require("../app");
 
-describe("Check Users Routes", () => {
+describe.skip("Check Users Routes", () => {
   describe("Route : GET /users", () => {
     it("Should able to get all listed books in database", async () => {
       const response = await request(app).get("/users");

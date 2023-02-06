@@ -1,22 +1,11 @@
 const imageKit = require("../helper/imageKit");
-const { Post } = require("../models");
+const { Post, User, Genre, Book } = require("../models");
 
 class PostController {
   static async find(req, res, next) {
     const { search, genre, user } = req.query;
     try {
-      const posts = await Post.findAll({
-        include: [
-          {
-            model: User,
-            attributes: ["id", "fullname", "email"],
-          },
-          {
-            model: Genre,
-            attributes: ["id", "name"],
-          },
-        ],
-      });
+      const posts = await Post.findAll();
 
       res.status(200).json(posts);
     } catch (error) {
@@ -27,19 +16,7 @@ class PostController {
   static async findOne(req, res, next) {
     const { id } = req.params;
     try {
-      const post = await Post.findByPk(id, {
-        include: [
-          {
-            model: User,
-            attributes: {
-              exclude: ["password"],
-            },
-          },
-          {
-            model: Genre,
-          },
-        ],
-      });
+      const post = await Post.findByPk(id);
       if (!post) throw { name: "post_not_found" };
 
       res.status(200).json(post);
@@ -88,27 +65,26 @@ class PostController {
     }
   }
 
-  static async update(req, res, next) {
-    const { id } = req.params;
-    const { condition, description, BookId } = req.body;
+  // static async update(req, res, next) {
+  //   const { id } = req.params;
+  //   const { condition, description, BookId } = req.body;
+  //   try {
+  //     const post = await Post.findByPk(id);
+  //     if (!post) throw { name: "post_not_found" };
 
-    try {
-      const post = await Post.findByPk(id);
-      if (!post) throw { name: "post_not_found" };
+  //     await post.update({
+  //       condition,
+  //       description,
+  //       BookId,
+  //     });
 
-      await post.update({
-        condition,
-        description,
-        BookId,
-      });
-
-      res
-        .status(200)
-        .json({ message: `Edit Sucessfull for post with id ${id}` });
-    } catch (error) {
-      next(error);
-    }
-  }
+  //     res
+  //       .status(200)
+  //       .json({ message: `Edit Sucessfull for post with id ${id}` });
+  //   } catch (error) {
+  //     next(error);
+  //   }
+  // }
 
   static async changeStatus(req, res, next) {
     const { id } = req.params;
@@ -116,7 +92,9 @@ class PostController {
       const post = await Post.findByPk(id);
       if (!post) throw { name: "post_not_found" };
 
-      await post.update({ isClosed: !post.isClosed });
+      post.isClosed = !post.isClosed;
+
+      await post.save();
 
       res.status(200).json({
         message: `Status of post with id ${id} is changed successfully`,

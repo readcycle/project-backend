@@ -4,9 +4,19 @@ const { Post } = require("../models");
 
 const data = require("../db.json").posts;
 const { BookId, condition, description, UserId, isClosed, imageUrl } = data[0];
-let post;
+
+beforeAll(() => {
+  jest.restoreAllMocks();
+});
 
 describe("Post Endpoint Test", () => {
+  test("GET /posts => return array of post", async () => {
+    const response = await request(app).get("/posts");
+
+    expect(response.status).toBe(200);
+    expect(response.body).toBeInstanceOf(Array);
+  });
+
   test("GET /posts => return array of post", async () => {
     const response = await request(app).get("/posts");
 
@@ -132,19 +142,20 @@ describe("Post Endpoint Test", () => {
     );
   });
 
-  test("PATCH /posts/Lid => return successful message", async () => {
-    const response = await request(app).patch(`/posts/${post.id}`);
+  test("PATCH /posts/:id => return successful message", async () => {
+    const response = await request(app).patch(`/posts/1`);
 
     expect(response.status).toBe(200);
     expect(response.body).toBeInstanceOf(Object);
     expect(response.body).toHaveProperty(
       "message",
-      `Status of post with id ${post.id} is changed successfully`
+      `Status of post with id 1 is changed successfully`
     );
   });
 
-  test("PATCH /posts/Lid => return 404 not found", async () => {
-    const response = await request(app).put("/posts/999");
+  test("PATCH /posts/:id => return 404 not found", async () => {
+    const response = await request(app).patch("/posts/999");
+    console.log(response);
 
     expect(response.status).toBe(404);
     expect(response.body).toBeInstanceOf(Object);
@@ -155,13 +166,13 @@ describe("Post Endpoint Test", () => {
   });
 
   test("DELETE /posts/:id => return successful message", async () => {
-    const response = await request(app).delete(`/posts/${post.id}`);
+    const response = await request(app).delete(`/posts/1`);
 
     expect(response.status).toBe(200);
     expect(response.body).toBeInstanceOf(Object);
     expect(response.body).toHaveProperty(
       "message",
-      `Post with id ${post.id} is deleted`
+      `Post with id 1 is deleted`
     );
   });
 
