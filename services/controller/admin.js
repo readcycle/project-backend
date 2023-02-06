@@ -29,12 +29,10 @@ class Administrator {
 
       res.status(200).json({
         access_token: tokenize({ id: admin.id, email }),
-        // email: admin.email,
+        email: admin.email,
       });
     } catch (error) {
       next(error);
     }
   }
 }
-
-module.exports = Administrator;

@@ -5,6 +5,8 @@ const userRouter = require("./userRoutes");
 const reportRouter = require("./reportRoutes");
 const postRouter = require("./post");
 const adminRouter = require("./admin");
+const reportRouter = require("./report");
+const genreRouter = require("./genre");
 
 router.use("/admins", adminRouter);
 router.use("/genres", genreRouter);

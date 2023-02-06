@@ -56,7 +56,7 @@ class ReportController {
   static async updateReport(req, res, next) {
     try {
       const report = await Report.findByPk(req.params.id);
-      if (!report) throw { name: "DataNotFound" };
+      if (!report) throw { name: "report_not_found" };
 
       await Report.update(
         { isSolved: !report.isSolved },
