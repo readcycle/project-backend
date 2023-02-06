@@ -45,24 +45,24 @@ const bidsTypeDefs = `#graphql
 const bidsResolvers = {
   Query: {
     bids: async (_, __, context) => {
-      console.log(context);
+      //   console.log(context);
       const { data } = await axios(bidAPI);
       return data;
     },
     bid: async (_, { id }, context) => {
-      console.log(id, context);
+      //   console.log(id, context);
       const { data } = await axios(bidAPI + `/${id}`);
       return data;
     },
   },
   Mutation: {
     bidCreate: async (_, { input }, context) => {
-      console.log(input);
+      const { access_token } = context;
       const { data } = await axios({
         method: "post",
         url: bidAPI,
         headers: {
-          access_token: "",
+          access_token,
         },
         data: { ...input },
       });
