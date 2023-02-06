@@ -9,7 +9,7 @@ class UserController {
         attributes: { exclude: ["password"] },
       };
 
-      const data = await User.findAll();
+      const data = await User.findAll(optionQuery);
 
       res.status(200).json(data);
     } catch (error) {
@@ -23,6 +23,7 @@ class UserController {
       const data = await User.findByPk(id, {
         attributes: { exclude: ["password"] },
       });
+      // console.log(data);
       if (!data) throw { name: "not_found" };
 
       res.status(200).json(data);
@@ -45,7 +46,6 @@ class UserController {
         favoriteBook,
         favoriteGenre,
       });
-
       res
         .status(200)
         .json({ message: `Success edit user profile with id : ${id}` });

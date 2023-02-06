@@ -1,9 +1,25 @@
-const { Bid } = require("../models");
+const { Bid, User, Book, Genre } = require("../models");
 
 class BidController {
   static async getAllBids(req, res, next) {
     const { user, post } = req.query;
-    let options = { where: {} };
+    let options = {
+      where: {},
+      include: [
+        {
+          model: User,
+          attributes: ["id", "fullname", "email"],
+        },
+        {
+          model: Book,
+          attributes: ["id", "title", "author"],
+          include: {
+            model: Genre,
+            attributes: ["id", "name"],
+          },
+        },
+      ],
+    };
     try {
       if (user) options.where = { UserId: user };
       if (post) options.where = { PostId: post };
@@ -29,14 +45,13 @@ class BidController {
   }
 
   static async addBid(req, res, next) {
-    const { BookId, description, condition, UserId, imageUrl, PostId } =
-      req.body;
+    const { BookId, description, condition, imageUrl, PostId } = req.body;
     try {
       const newBid = await Bid.create({
         BookId,
         description,
         condition,
-        UserId,
+        UserId: req.user.id,
         imageUrl,
         PostId,
       });
