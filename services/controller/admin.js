@@ -1,6 +1,4 @@
 const { Admin } = require("../models");
-// const { comparePwd } = require("../helpers/bcrypt");
-// const { encode } = require("../helpers/jwt");
 const { funcValidateHash } = require("../helper/bcryptHandler");
 const { tokenize } = require("../helper/jwtHandler");
 
