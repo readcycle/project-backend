@@ -1,9 +1,10 @@
 const { ApolloServer } = require("@apollo/server");
 const { startStandaloneServer } = require("@apollo/server/standalone");
+const { adminResolvers, adminTypeDefs } = require("./schema/adminSchema");
 
 const server = new ApolloServer({
-  resolvers,
-  typeDefs,
+  resolvers: [adminResolvers],
+  typeDefs: [adminTypeDefs],
   introspection: true,
 });
 

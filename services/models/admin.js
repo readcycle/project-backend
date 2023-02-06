@@ -1,7 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
 const { funcHashValue } = require("../helper/bcryptHandler");
-
 module.exports = (sequelize, DataTypes) => {
   class Admin extends Model {
     /**

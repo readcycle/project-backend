@@ -79,6 +79,22 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      {
+        fullname: "Katara",
+        email: "katara@gmail.com",
+        password: funcHashValue("katara123"),
+        phoneNumber: "081232211431",
+        city: "Medan",
+        favoriteGenre: "History",
+        favoriteBook: "Lama",
+        location: Sequelize.fn(
+          "ST_GeomFromText",
+          "POINT(106.84357584501699 -6.239228771586251)"
+        ),
+        isBanned: false,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
     ]);
   },
 

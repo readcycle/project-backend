@@ -11,7 +11,7 @@ const authAdmin = async (req, res, next) => {
     const admin = await Admin.findByPk(payload.id);
     if (!admin) throw { name: "InvalidToken" };
 
-    req.admin = { id: admin.id };
+    req.admin = { id: admin.id, email: admin.email };
 
     next();
   } catch (error) {

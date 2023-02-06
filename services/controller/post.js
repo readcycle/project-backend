@@ -5,7 +5,18 @@ class PostController {
   static async find(req, res, next) {
     const { search, genre, user } = req.query;
     try {
-      const posts = await Post.findAll();
+      const posts = await Post.findAll({
+        include: [
+          {
+            model: User,
+            attributes: ["id", "fullname", "email"],
+          },
+          {
+            model: Genre,
+            attributes: ["id", "name"],
+          },
+        ],
+      });
 
       res.status(200).json(posts);
     } catch (error) {
@@ -16,7 +27,19 @@ class PostController {
   static async findOne(req, res, next) {
     const { id } = req.params;
     try {
-      const post = await Post.findByPk(id);
+      const post = await Post.findByPk(id, {
+        include: [
+          {
+            model: User,
+            attributes: {
+              exclude: ["password"],
+            },
+          },
+          {
+            model: Genre,
+          },
+        ],
+      });
       if (!post) throw { name: "post_not_found" };
 
       res.status(200).json(post);

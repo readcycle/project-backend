@@ -2,39 +2,36 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Posts", {
+    await queryInterface.createTable("Bids", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      title: {
-        type: Sequelize.STRING,
-      },
-      author: {
-        type: Sequelize.STRING,
-      },
-      condition: {
-        type: Sequelize.INTEGER,
-      },
-      description: {
-        type: Sequelize.TEXT,
-      },
       UserId: {
         type: Sequelize.INTEGER,
-        references: { model: { tableName: "Users" }, key: "id" },
-        onDelete: "CASCADE",
+        references: {
+          model: "Users",
+        },
         onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
-      GenreId: {
+      BookId: {
         type: Sequelize.INTEGER,
+        references: {
+          model: "Books",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
-      isClosed: {
-        type: Sequelize.BOOLEAN,
-      },
-      imageUrl: {
-        type: Sequelize.STRING,
+      PostId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Posts",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
       createdAt: {
         allowNull: false,
@@ -47,6 +44,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Posts");
+    await queryInterface.dropTable("Bids");
   },
 };

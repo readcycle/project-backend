@@ -51,6 +51,26 @@ const funcErrorHandler = (err, req, res, next) => {
     message = "Post not found";
   }
 
+  if (err.name === "InvalidToken" || err.name === "JsonWebTokenError") {
+    code = 401;
+    message = "Invalid token";
+  }
+
+  if (err.name === "user_not_found") {
+    code = 401;
+    message = "User not found";
+  }
+
+  if (err.name === "genre_not_found") {
+    code = 401;
+    message = "Genre not found";
+  }
+
+  if (err.name === "report_not_found") {
+    code = 401;
+    message = "Report not found";
+  }
+
   res.status(code).json({ message });
 };
 
