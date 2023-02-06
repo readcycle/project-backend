@@ -6,27 +6,27 @@ const { tokenize } = require("../helper/jwtHandler");
 let tokenAdmin;
 let genreId;
 
-// beforeAll(async () => {
-//   const admin = await Admin.create({
-//     email: "admin@mail.com",
-//     password: "admin",
-//   });
+beforeAll(async () => {
+  const admin = await Admin.create({
+    email: "admin@mail.com",
+    password: "admin",
+  });
 
-//   tokenAdmin = tokenize({ id: admin.id, email: admin.email });
+  tokenAdmin = tokenize({ id: admin.id, email: admin.email });
 
-//   const genre = await Genre.create({
-//     name: "New Genre",
-//   });
+  const genre = await Genre.create({
+    name: "New Genre",
+  });
 
-//   genreId = genre.id;
-// });
+  genreId = genre.id;
+});
 
-// afterAll(async () => {
-//   await Genre.destroy({ truncate: true, cascade: true, restartIdentity: true });
-//   await Admin.destroy({ truncate: true, cascade: true, restartIdentity: true });
-// });
+afterAll(async () => {
+  await Genre.destroy({ truncate: true, cascade: true, restartIdentity: true });
+  await Admin.destroy({ truncate: true, cascade: true, restartIdentity: true });
+});
 
-describe.skip("API Genre", () => {
+describe("API Genre", () => {
   describe("GET /genres", () => {
     test.only("Get list genres success", async () => {
       const response = await request(app)

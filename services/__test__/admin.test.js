@@ -7,13 +7,13 @@ const admin1 = {
   password: "admin",
 };
 
-// afterAll(async () => {
-//   await Admin.destroy({ truncate: true, cascade: true, restartIdentity: true });
-// });
+afterAll(async () => {
+  await Admin.destroy({ truncate: true, cascade: true, restartIdentity: true });
+});
 
-describe.skip("API Admin", () => {
+describe("API Admin", () => {
   describe("POST /admins/register", () => {
-    test("Register success", async () => {
+    test.only("Register success", async () => {
       const response = await request(app).post("/admins/register").send(admin1);
 
       expect(response.status).toBe(201);
@@ -21,7 +21,7 @@ describe.skip("API Admin", () => {
       expect(response.body).toHaveProperty("email", expect.any(String));
     });
 
-    test("Register failed because no email was included", async () => {
+    test.only("Register failed because no email was included", async () => {
       const response = await request(app).post("/admins/register").send({
         password: admin1.password,
       });
@@ -30,7 +30,7 @@ describe.skip("API Admin", () => {
       expect(response.body).toHaveProperty("message", "Email is required");
     });
 
-    test("Register failed because email is empty string", async () => {
+    test.only("Register failed because email is empty string", async () => {
       const response = await request(app).post("/admins/register").send({
         email: "",
         password: admin1.password,
@@ -40,7 +40,7 @@ describe.skip("API Admin", () => {
       expect(response.body).toHaveProperty("message", "Email is required");
     });
 
-    test("Register failed because invalid format email", async () => {
+    test.only("Register failed because invalid format email", async () => {
       const response = await request(app).post("/admins/register").send({
         email: "alpha@mailcom",
         password: admin1.password,
@@ -50,14 +50,14 @@ describe.skip("API Admin", () => {
       expect(response.body).toHaveProperty("message", "Invalid format email");
     });
 
-    test("Register failed because email already in use", async () => {
+    test.only("Register failed because email already in use", async () => {
       const response = await request(app).post("/admins/register").send(admin1);
 
       expect(response.status).toBe(400);
       expect(response.body).toHaveProperty("message", "Email must be unique");
     });
 
-    test("Register failed because no password was included", async () => {
+    test.only("Register failed because no password was included", async () => {
       const response = await request(app).post("/admins/register").send({
         email: admin1.email,
       });
@@ -68,7 +68,7 @@ describe.skip("API Admin", () => {
   });
 
   describe("POST /admins/login", () => {
-    test("Login success", async () => {
+    test.only("Login success", async () => {
       const response = await request(app).post("/admins/login").send(admin1);
 
       expect(response.status).toBe(200);
@@ -76,7 +76,7 @@ describe.skip("API Admin", () => {
       expect(response.body).toHaveProperty("email", expect.any(String));
     });
 
-    test("Login failed because email not registered", async () => {
+    test.only("Login failed because email not registered", async () => {
       const response = await request(app).post("/admins/login").send({
         email: "wrong@mail.com",
         password: admin1.password,
@@ -85,11 +85,11 @@ describe.skip("API Admin", () => {
       expect(response.status).toBe(401);
       expect(response.body).toHaveProperty(
         "message",
-        "Wrong email or password"
+        "Invalid email or password"
       );
     });
 
-    test("Login failed because password is not match", async () => {
+    test.only("Login failed because password is not match", async () => {
       const response = await request(app).post("/admins/login").send({
         email: admin1.email,
         password: "wrong",
@@ -98,7 +98,7 @@ describe.skip("API Admin", () => {
       expect(response.status).toBe(401);
       expect(response.body).toHaveProperty(
         "message",
-        "Wrong email or password"
+        "Invalid email or password"
       );
     });
   });
