@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --verbose --runInBand --forceExit",
+    "test": "jest --verbose --runInBand --forceExit --coverage",
     "dev": "nodemon ./bin/www",
     "start": "node ./bin/www"
   },

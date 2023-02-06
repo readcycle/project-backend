@@ -36,3 +36,5 @@ class Administrator {
     }
   }
 }
+
+module.exports = Administrator;

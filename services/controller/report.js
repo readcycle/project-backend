@@ -41,8 +41,8 @@ class ReportController {
     try {
       const report = await Report.findByPk(req.params.id, {
         include: [
-          { model: User, attributes: ["username"], as: "Reporter" },
-          { model: User, attributes: ["username"], as: "Reported" },
+          { model: User, attributes: ["fullname"], as: "Reporter" },
+          { model: User, attributes: ["fullname"], as: "Reported" },
         ],
       });
       if (!report) throw { name: "DataNotFound" };
