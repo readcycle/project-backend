@@ -10,12 +10,14 @@ class UserController {
         attributes: { exclude: ["password"] },
       };
       if (queryLoc) {
-        const [latitute, longitude] = queryLoc.split(",");
+        const [latitude, longitude] = queryLoc.split(",");
+        if (!latitude) throw { name: "empty_latitude" };
+        if (!longitude) throw { name: "empty_longitude" };
         optionQuery.where = sequelize.where(
           sequelize.fn(
             "ST_DWithin",
             sequelize.col("location"),
-            sequelize.fn("ST_GeomFromText", `POINT(${longitude} ${latitute})`),
+            sequelize.fn("ST_GeomFromText", `POINT(${longitude} ${latitude})`),
             distance,
             true
           ),
@@ -35,6 +37,7 @@ class UserController {
       const data = await User.findByPk(id, {
         attributes: { exclude: ["password"] },
       });
+      // console.log(data);
       if (!data) throw { name: "not_found" };
       res.status(200).json(data);
     } catch (error) {
@@ -49,16 +52,14 @@ class UserController {
         req.body;
       const data = await User.findByPk(id);
       if (!data) throw { name: "not_found" };
-      data.set({
+      await data.update({
         fullname,
         phoneNumber,
         city,
         favoriteBook,
         favoriteGenre,
       });
-      const { isNewRecord } = await data.save();
-      if (!isNewRecord) throw { name: "email_edit_fail" };
-      console.log(isNewRecord);
+      // await data.save();
       res
         .status(200)
         .json({ message: `Success edit user profile with id : ${id}` });
