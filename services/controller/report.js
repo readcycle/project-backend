@@ -7,7 +7,7 @@ class ReportController {
       const { title, content } = req.body;
 
       const reportedUser = await User.findByPk(reportedId);
-      if (!reportedUser) throw { name: "DataNotFound" };
+      if (!reportedUser) throw { name: "user_not_found" };
 
       const report = await Report.create({
         title,
@@ -41,11 +41,11 @@ class ReportController {
     try {
       const report = await Report.findByPk(req.params.id, {
         include: [
-          { model: User, attributes: ["fullname"], as: "Reporter" },
-          { model: User, attributes: ["fullname"], as: "Reported" },
+          { model: User, attributes: ["fullname"], as: "Issuer" },
+          { model: User, attributes: ["fullname"], as: "Victim" },
         ],
       });
-      if (!report) throw { name: "DataNotFound" };
+      if (!report) throw { name: "report_not_found" };
 
       res.status(200).json(report);
     } catch (error) {

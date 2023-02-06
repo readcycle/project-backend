@@ -65,7 +65,7 @@ describe("API Genre", () => {
         test.only("Get genre by id failed because invalid genreId", async () => {
             let wrongId = 9999
             const response = await request(app)
-            .post(`/genres/${wrongId}`)
+            .get(`/genres/${wrongId}`)
             .set("access_token", tokenAdmin)
 
             expect(response.status).toBe(404)
