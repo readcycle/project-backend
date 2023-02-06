@@ -1,4 +1,5 @@
-const { Post, User, Genre } = require("../models");
+const imageKit = require("../helper/imageKit");
+const { Post } = require("../models");
 
 class PostController {
   static async find(req, res, next) {
@@ -48,16 +49,35 @@ class PostController {
   }
 
   static async create(req, res, next) {
-    const { title, author, condition, description, UserId, GenreId, imageUrl } =
-      req.body;
+    const { condition, description, UserId, BookId, imageUrl } = req.body;
+    const { file } = req;
     try {
+      // if (!file) throw { name: "image_not_found" };
+
+      // const { err, response } = imageKit.upload({
+      //   file: file.buffer.toString("base64"),
+      //   fileName: Date.now() + "-" + file.fieldname + ".png",
+      //   folder: "images_posts",
+      // });
+
+      // if (err) throw { name: "image_not_found" };
+
+      // const imageUrl = imageKit.url({
+      //   src: url,
+      //   transformation: [
+      //     {
+      //       quality: "80",
+      //       format: "png",
+      //       focus: "auto",
+      //     },
+      //   ],
+      // });
+
       const newPost = await Post.create({
-        title,
-        author,
+        BookId,
         condition,
         description,
         UserId,
-        GenreId,
         isClosed: false,
         imageUrl,
       });
@@ -70,20 +90,16 @@ class PostController {
 
   static async update(req, res, next) {
     const { id } = req.params;
-    const { title, author, condition, description, UserId, GenreId, imageUrl } =
-      req.body;
+    const { condition, description, BookId } = req.body;
+
     try {
       const post = await Post.findByPk(id);
       if (!post) throw { name: "post_not_found" };
 
       await post.update({
-        title,
-        author,
         condition,
         description,
-        UserId,
-        GenreId,
-        imageUrl,
+        BookId,
       });
 
       res

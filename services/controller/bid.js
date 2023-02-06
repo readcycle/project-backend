@@ -1,95 +1,47 @@
-const { Bid, User, Post, Book } = require("../models");
+const { Bid } = require("../models");
 
 class BidController {
   static async getAllBids(req, res, next) {
+    const { user, post } = req.query;
+    let options = { where: {} };
     try {
-      const data = await Bid.findAll({
-        include: [
-          {
-            model: User,
-            attributes: ["id", "fullname", "email"],
-          },
-          {
-            model: Book,
-            attributes: ["id", "title", "author"],
-          },
-          {
-            model: Post,
-            attributes: ["id", "title", "author"],
-          },
-        ],
-      });
-      res.status(200).json(data);
+      if (user) options.where = { UserId: user };
+      if (post) options.where = { PostId: post };
+
+      const bids = await Bid.findAll(options);
+
+      res.status(200).json(bids);
     } catch (error) {
       next(error);
     }
   }
 
   static async getBidById(req, res, next) {
+    const { id } = req.params;
     try {
-      const { id } = req.params;
-      const data = await Bid.findOne({
-        where: { id },
-        include: [
-          {
-            model: User,
-            attributes: {
-              exclude: ["password"],
-            },
-          },
-          {
-            model: Book,
-          },
-          {
-            model: Post,
-          },
-        ],
-      });
-      if (!data) throw { name: "not_found" };
-      res.status(200).json(data);
+      const bid = await Bid.findByPk(id);
+      if (!bid) throw { name: "bid_not_found" };
+
+      res.status(200).json(bid);
     } catch (error) {
       next(error);
     }
   }
 
   static async addBid(req, res, next) {
+    const { BookId, description, condition, UserId, imageUrl, PostId } =
+      req.body;
     try {
-      const { UserId, PostId, BookId } = req.body;
-      const data = await Bid.create({
-        UserId,
-        PostId,
+      const newBid = await Bid.create({
         BookId,
-      });
-      res.status(201).json(data);
-    } catch (error) {
-      next(error);
-    }
-  }
-
-  static async editBidWithId(req, res, next) {
-    try {
-      const { id } = req.params;
-      const { UserId, PostId, BookId } = req.body;
-      const data = await Bid.findOne({ where: { id } });
-      if (!data) throw { name: "not_found" };
-      await data.update({
+        description,
+        condition,
         UserId,
+        imageUrl,
         PostId,
-        BookId,
       });
-      res.status(200).json({ message: `Success edit bid with id : ${id}` });
-    } catch (error) {
-      next(error);
-    }
-  }
 
-  static async deleteBidById(req, res, next) {
-    try {
-      const { id } = req.params;
-      const data = await Bid.findOne({ where: { id } });
-      if (!data) throw { name: "not_found" };
-      await data.destroy();
-      res.status(200).json({ message: `Success delete bid with id : ${id}` });
+      res.status(201).json(newBid);
     } catch (error) {
       next(error);
     }

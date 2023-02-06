@@ -15,22 +15,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Post.init(
     {
-      title: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          notEmpty: { msg: "Title is required" },
-          notNull: { msg: "Title is required" },
-        },
-      },
-      author: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          notEmpty: { msg: "Author is required" },
-          notNull: { msg: "Author is required" },
-        },
-      },
+      BookId: DataTypes.INTEGER,
       condition: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -48,7 +33,6 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       UserId: DataTypes.INTEGER,
-      GenreId: DataTypes.INTEGER,
       isClosed: DataTypes.BOOLEAN,
       imageUrl: {
         type: DataTypes.STRING,

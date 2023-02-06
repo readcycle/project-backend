@@ -1,31 +1,34 @@
-const { Book, Genre } = require("../models");
+const { Book } = require("../models");
 
 class BookController {
   static async getAllBooks(req, res, next) {
     try {
-      const data = await Book.findAll({
-        include: {
-          model: Genre,
-          attributes: ["id", "name"],
-        },
-      });
-      res.status(200).json(data);
+      const books = await Book.findAll();
+
+      res.status(200).json(books);
     } catch (error) {
       next(error);
     }
   }
 
   static async getBookById(req, res, next) {
+    const { bookId } = req.params;
     try {
-      const { id } = req.params;
-      const data = await Book.findOne({
-        where: { id },
-        include: {
-          model: Genre,
-        },
-      });
-      if (!data) throw { name: "not_found" };
-      res.status(200).json(data);
+      const book = await Book.findByPk(bookId);
+      if (!book) throw { name: "book_not_found" };
+
+      res.status(200).json(book);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async create(req, res, next) {
+    const { title, author, GenreId } = req.body;
+    try {
+      const newBook = await Book.create({ title, author, GenreId });
+
+      res.status(201).json(newBook);
     } catch (error) {
       next(error);
     }

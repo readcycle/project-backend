@@ -12,9 +12,10 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
      */
-    const data = require("../db.json").posts;
-
-    await queryInterface.bulkInsert("Posts", data);
+    const { books, posts, bids } = require("../db.json");
+    await queryInterface.bulkInsert("Books", books);
+    await queryInterface.bulkInsert("Posts", posts);
+    await queryInterface.bulkInsert("Bids", bids);
   },
 
   async down(queryInterface, Sequelize) {
@@ -26,6 +27,17 @@ module.exports = {
      */
     await queryInterface.bulkDelete("Posts", null, {
       truncate: true,
+      cascade: true,
+      restartIdentity: true,
+    });
+    await queryInterface.bulkDelete("Books", null, {
+      truncate: true,
+      cascade: true,
+      restartIdentity: true,
+    });
+    await queryInterface.bulkDelete("Bids", null, {
+      truncate: true,
+      cascade: true,
       restartIdentity: true,
     });
   },

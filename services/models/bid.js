@@ -9,16 +9,37 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Bid.belongsTo(models.User);
-      Bid.belongsTo(models.Book);
-      Bid.belongsTo(models.Post);
     }
   }
   Bid.init(
     {
-      UserId: DataTypes.INTEGER,
       BookId: DataTypes.INTEGER,
-      PostId: DataTypes.INTEGER,
+      description: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+        validate: {
+          notEmpty: { msg: "Description is required" },
+          notNull: { msg: "Description is required" },
+        },
+      },
+      condition: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notEmpty: { msg: "Condition is required" },
+          notNull: { msg: "Condition is required" },
+        },
+      },
+      UserId: DataTypes.INTEGER,
+      imageUrl: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: { msg: "Image is required" },
+          notNull: { msg: "Image is required" },
+        },
+      },
+      PostId: DataTypes.STRING,
     },
     {
       sequelize,

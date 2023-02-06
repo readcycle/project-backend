@@ -7,8 +7,23 @@ const funcErrorHandler = (err, req, res, next) => {
     err.name === "SequelizeValidationError" ||
     err.name === "SequelizeUniqueConstraintError"
   ) {
-    code = 404;
+    code = 400;
     message = err.errors[0].message;
+  }
+
+  if (err.name === "image_not_found") {
+    code = 400;
+    message = "Image is required";
+  }
+
+  if (err.name === "book_not_found") {
+    code = 404;
+    message = "Book not found";
+  }
+
+  if (err.name === "bid_not_found") {
+    code = 404;
+    message = "Bid not found";
   }
 
   if (err.name === "not_found") {
@@ -31,9 +46,9 @@ const funcErrorHandler = (err, req, res, next) => {
     message = "Wrong email or password";
   }
 
-  if (err.name === "email_edit_fail") {
-    code = 400;
-    message = "Email is taken already";
+  if (err.name === "post_not_found") {
+    code = 404;
+    message = "Post not found";
   }
 
   if (err.name === "InvalidToken" || err.name === "JsonWebTokenError") {

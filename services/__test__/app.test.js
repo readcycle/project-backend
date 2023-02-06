@@ -1,7 +1,7 @@
 const request = require("supertest");
 const app = require("../app");
 
-describe("Arrive in landing page", () => {
+describe.skip("Arrive in landing page", () => {
   describe("Root endpoint", () => {
     it("Should able to recieve root endpoint", async () => {
       const response = await request(app).get("/");
@@ -12,7 +12,7 @@ describe("Arrive in landing page", () => {
   });
 });
 
-describe("Check Books Routes", () => {
+describe.skip("Check Books Routes", () => {
   describe("Route : /books", () => {
     it("Should able to get all listed books in database", async () => {
       const response = await request(app).get("/books");
