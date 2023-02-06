@@ -9,7 +9,7 @@ class UserController {
         attributes: { exclude: ["password"] },
       };
 
-      const data = await User.findAll();
+      const data = await User.findAll(optionQuery);
 
       res.status(200).json(data);
     } catch (error) {
@@ -46,9 +46,6 @@ class UserController {
         favoriteBook,
         favoriteGenre,
       });
-      const { isNewRecord } = await data.save();
-      if (!isNewRecord) throw { name: "email_edit_fail" };
-      console.log(isNewRecord);
       res
         .status(200)
         .json({ message: `Success edit user profile with id : ${id}` });

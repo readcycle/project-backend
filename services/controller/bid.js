@@ -29,14 +29,13 @@ class BidController {
   }
 
   static async addBid(req, res, next) {
-    const { BookId, description, condition, UserId, imageUrl, PostId } =
-      req.body;
+    const { BookId, description, condition, imageUrl, PostId } = req.body;
     try {
       const newBid = await Bid.create({
         BookId,
         description,
         condition,
-        UserId,
+        UserId: req.user.id,
         imageUrl,
         PostId,
       });
