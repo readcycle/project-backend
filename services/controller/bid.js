@@ -29,19 +29,42 @@ class BidController {
   }
 
   static async addBid(req, res, next) {
-    const { BookId, description, condition, UserId, imageUrl, PostId } =
-      req.body;
+    const { BookId, description, condition, UserId, PostId } = req.body;
     try {
-      const newBid = await Bid.create({
-        BookId,
-        description,
-        condition,
-        UserId,
-        imageUrl,
-        PostId,
-      });
+      if (!file) throw { name: "image_not_found" };
 
-      res.status(201).json(newBid);
+      imageKit.upload(
+        {
+          file: file.buffer.toString("base64"),
+          fileName: Date.now() + "-" + file.fieldname + ".png",
+          folder: "images_posts",
+        },
+        async (err, response) => {
+          if (err) throw { name: "image_not_found" };
+
+          const imageUrl = imageKit.url({
+            src: response.url,
+            transformation: [
+              {
+                quality: "80",
+                format: "png",
+                focus: "auto",
+              },
+            ],
+          });
+
+          const newBid = await Bid.create({
+            BookId,
+            description,
+            condition,
+            UserId,
+            imageUrl,
+            PostId,
+          });
+
+          res.status(201).json(newBid);
+        }
+      );
     } catch (error) {
       next(error);
     }
