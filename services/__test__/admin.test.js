@@ -3,13 +3,13 @@ const app = require("../app");
 const { Admin } = require("../models");
 
 const admin1 = {
-  email: "admin@mail.com",
-  password: "admin",
+  email: "admin12@mail.com",
+  password: "admin12",
 };
 
-afterAll(async () => {
-  await Admin.destroy({ truncate: true, cascade: true, restartIdentity: true });
-});
+// afterAll(async () => {
+//   await Admin.destroy({ truncate: true, cascade: true, restartIdentity: true });
+// });
 
 describe("API Admin", () => {
   describe("POST /admins/register", () => {
@@ -87,6 +87,26 @@ describe("API Admin", () => {
         "message",
         "Wrong email or password"
       );
+    });
+
+    test("Login failed because email is empty", async () => {
+      const response = await request(app).post("/admins/login").send({
+        email: "",
+        password: admin1.password,
+      });
+
+      expect(response.status).toBe(400);
+      expect(response.body).toHaveProperty("message", "Email is required");
+    });
+
+    test("Login failed because password is empty", async () => {
+      const response = await request(app).post("/admins/login").send({
+        email: "wrong@mail.com",
+        password: "",
+      });
+
+      expect(response.status).toBe(400);
+      expect(response.body).toHaveProperty("message", "Password is required");
     });
 
     test("Login failed because password is not match", async () => {

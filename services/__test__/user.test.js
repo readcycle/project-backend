@@ -32,9 +32,9 @@ beforeAll(async () => {
   reportedId = user2.id;
 });
 
-afterAll(async () => {
-  await User.destroy({ truncate: true, cascade: true, restartIdentity: true });
-});
+// afterAll(async () => {
+//   await User.destroy({ truncate: true, cascade: true, restartIdentity: true });
+// });
 
 describe.skip("Check Users Routes", () => {
   describe("Route : GET /users", () => {
@@ -46,6 +46,7 @@ describe.skip("Check Users Routes", () => {
         expect(el).toHaveProperty("id");
       });
     });
+
     it("Should able to get all nearest users in database", async () => {
       const response = await request(app).get(
         "/users?queryLoc=-6.241247906043303,106.84081593559185&distance=1000000"
@@ -55,22 +56,6 @@ describe.skip("Check Users Routes", () => {
       response.body.forEach((el) => {
         expect(el).toHaveProperty("id");
       });
-    });
-    it("Should not able get all nearest users with empty longitude param", async () => {
-      const response = await request(app).get(
-        "/users?queryLoc=-6.241247906043303,&distance=1000000"
-      );
-      expect(response.statusCode).toBe(400);
-      expect(response.body).toHaveProperty("message");
-      expect(response.body.message).toBe("Longitude param cannot be empty");
-    });
-    it("Should not able get all nearest users with empty latitude param", async () => {
-      const response = await request(app).get(
-        "/users?queryLoc=,106.84081593559185&distance=1000000"
-      );
-      expect(response.statusCode).toBe(400);
-      expect(response.body).toHaveProperty("message");
-      expect(response.body.message).toBe("Latitude param cannot be empty");
     });
   });
 
@@ -82,6 +67,7 @@ describe.skip("Check Users Routes", () => {
       expect(response.body).toHaveProperty("id");
       expect(response.body.id).toBe(1);
     });
+
     it("Should return not found when id is not in the database", async () => {
       const response = await request(app).get("/users/999999");
       expect(response.statusCode).toBe(404);
@@ -105,6 +91,7 @@ describe.skip("Check Users Routes", () => {
       expect(response.statusCode).toBe(201);
       expect(response.body).toEqual(expect.any(Object));
     });
+
     it("Should not create user when empty fullname", async () => {
       const response = await request(app).post("/users/register").send({
         email: "jeanny2@gmail.com",
@@ -118,6 +105,7 @@ describe.skip("Check Users Routes", () => {
       expect(response.body).toHaveProperty("message");
       expect(response.body.message).toBe("Fullname cannot be null");
     });
+
     it("Should not create user when empty email", async () => {
       const response = await request(app).post("/users/register").send({
         fullname: "Jean G",
@@ -131,6 +119,7 @@ describe.skip("Check Users Routes", () => {
       expect(response.body).toHaveProperty("message");
       expect(response.body.message).toBe("Email cannot be null");
     });
+
     it("Should not create user when empty password", async () => {
       const response = await request(app).post("/users/register").send({
         fullname: "Jean G",
@@ -144,6 +133,7 @@ describe.skip("Check Users Routes", () => {
       expect(response.body).toHaveProperty("message");
       expect(response.body.message).toBe("Password cannot be null");
     });
+
     it("Should not create user when password's length is less than 5", async () => {
       const response = await request(app).post("/users/register").send({
         fullname: "Jean G",
@@ -160,6 +150,7 @@ describe.skip("Check Users Routes", () => {
         "Password must have more than 4 characters"
       );
     });
+
     it("Should not create user when invalid email format", async () => {
       const response = await request(app).post("/users/register").send({
         fullname: "Jean G",
@@ -174,6 +165,7 @@ describe.skip("Check Users Routes", () => {
       expect(response.body).toHaveProperty("message");
       expect(response.body.message).toBe("Only Email Format");
     });
+
     it("Should not create user when email is used already", async () => {
       const response = await request(app).post("/users/register").send({
         fullname: "nilou",
@@ -199,21 +191,41 @@ describe.skip("Check Users Routes", () => {
       expect(response.body).toHaveProperty("access_token");
       expect(response.body.access_token).toEqual(expect.any(String));
     });
+
     it("Should not able to login with empty email field", async () => {
       const response = await request(app)
         .post("/users/login")
         .send({ password: "password" });
       expect(response.statusCode).toBe(400);
       expect(response.body).toHaveProperty("message");
-      expect(response.body.message).toBe("email field cannot be empty");
+      expect(response.body.message).toBe("Email is required");
     });
+
     it("Should not able to login with empty password field", async () => {
       const response = await request(app)
         .post("/users/login")
         .send({ email: "email" });
       expect(response.statusCode).toBe(400);
       expect(response.body).toHaveProperty("message");
-      expect(response.body.message).toBe("password field cannot be empty");
+      expect(response.body.message).toBe("Password is required");
+    });
+
+    it("Should not able to login with invalid password", async () => {
+      const response = await request(app)
+        .post("/users/login")
+        .send({ email: "userTest1@mail.com", password: "userTest2" });
+      expect(response.statusCode).toBe(401);
+      expect(response.body).toHaveProperty("message");
+      expect(response.body.message).toBe("Wrong email or password");
+    });
+
+    it("Should not able to login with invalid email", async () => {
+      const response = await request(app)
+        .post("/users/login")
+        .send({ email: "userTest10@mail.com", password: "userTest2" });
+      expect(response.statusCode).toBe(401);
+      expect(response.body).toHaveProperty("message");
+      expect(response.body.message).toBe("Wrong email or password");
     });
     it("Should not able to login with invalid password", async () => {
       const response = await request(app)
@@ -238,12 +250,14 @@ describe.skip("Check Users Routes", () => {
       const response = await request(app).put("/users/1").send({
         city: "Medan",
       });
+
       expect(response.statusCode).toBe(200);
       expect(response.body).toHaveProperty("message");
       expect(response.body.message).toBe(
         "Success edit user profile with id : 1"
       );
     });
+
     it("Should not able edit user with invalid id", async () => {
       const response = await request(app).put("/users/9999").send({
         city: "Medan",
@@ -263,6 +277,7 @@ describe.skip("Check Users Routes", () => {
         "Success update isBanned status of user with id : 1"
       );
     });
+
     it("Should not able update isBanned status of user with invalid id", async () => {
       const response = await request(app).patch("/users/9999");
       expect(response.statusCode).toBe(404);

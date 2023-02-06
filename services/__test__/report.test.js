@@ -16,7 +16,7 @@ const adminSeed = {
 
 const user1Seed = {
   fullname: "User Test 1",
-  email: "userTest1@mail.com",
+  email: "manusia1@mail.com",
   password: "userTest1",
   phoneNumber: "888888",
   city: "Jakarta",
@@ -26,7 +26,7 @@ const user1Seed = {
 
 const user2Seed = {
   fullname: "User Test 2",
-  email: "userTest2@mail.com",
+  email: "manusia2@mail.com",
   password: "userTest2",
   phoneNumber: "888888",
   city: "Bandung",
@@ -53,21 +53,23 @@ beforeAll(async () => {
   });
 
   reportId = report.id;
+
+  jest.restoreAllMocks();
 });
 
 afterAll(async () => {
-  await Report.destroy({
-    truncate: true,
-    cascade: true,
-    restartIdentity: true,
-  });
-  await User.destroy({ truncate: true, cascade: true, restartIdentity: true });
-  await Admin.destroy({ truncate: true, cascade: true, restartIdentity: true });
+  // await Report.destroy({
+  //   truncate: true,
+  //   cascade: true,
+  //   restartIdentity: true,
+  // });
+  // await User.destroy({ truncate: true, cascade: true, restartIdentity: true });
+  // await Admin.destroy({ truncate: true, cascade: true, restartIdentity: true });
 });
 
 describe("API Report", () => {
   describe("GET /reports", () => {
-    test.only("Get list reports success", async () => {
+    test("Get list reports success", async () => {
       const response = await request(app)
         .get("/reports")
         .set("access_token", tokenAdmin);
@@ -77,7 +79,7 @@ describe("API Report", () => {
       expect(response.body.length).toBeGreaterThan(0);
     });
 
-    test.only("Get list reports failed because no access_token was included", async () => {
+    test("Get list reports failed because no access_token was included", async () => {
       const response = await request(app).get("/reports");
       // .set("access_token", tokenAdmin)
 
@@ -87,7 +89,7 @@ describe("API Report", () => {
   });
 
   describe("GET /reports/:id", () => {
-    test.only("Get report by id success", async () => {
+    test("Get report by id success", async () => {
       const response = await request(app)
         .get(`/reports/${reportId}`)
         .set("access_token", tokenAdmin);
@@ -103,19 +105,19 @@ describe("API Report", () => {
       expect(response.body).toHaveProperty("createdAt", expect.any(String));
       expect(response.body).toHaveProperty("updatedAt", expect.any(String));
       expect(response.body).toHaveProperty("isSolved", expect.any(Boolean));
-      expect(response.body).toHaveProperty("Reporter", expect.any(Object));
-      expect(response.body.Reporter).toHaveProperty(
+      expect(response.body).toHaveProperty("Issuer", expect.any(Object));
+      expect(response.body.Issuer).toHaveProperty(
         "fullname",
         expect.any(String)
       );
-      expect(response.body).toHaveProperty("Reported", expect.any(Object));
-      expect(response.body.Reported).toHaveProperty(
+      expect(response.body).toHaveProperty("Victim", expect.any(Object));
+      expect(response.body.Victim).toHaveProperty(
         "fullname",
         expect.any(String)
       );
     });
 
-    test.only("Get report by id failed because no access_token was included", async () => {
+    test("Get report by id failed because no access_token was included", async () => {
       const response = await request(app).get(`/reports/${reportId}`);
       // .set("access_token", tokenAdmin)
 
@@ -123,7 +125,7 @@ describe("API Report", () => {
       expect(response.body).toHaveProperty("message", "Invalid token");
     });
 
-    test.only("Get roport by id failed because invalid report id", async () => {
+    test("Get roport by id failed because invalid report id", async () => {
       let wrongId = 999999;
       const response = await request(app)
         .get(`/reports/${wrongId}`)
@@ -135,7 +137,7 @@ describe("API Report", () => {
   });
 
   describe("POST /reports/:reportedId", () => {
-    test.only("Add report success", async () => {
+    test("Add report success", async () => {
       const response = await request(app)
         .post(`/reports/${reportedId}`)
         .set("access_token", tokenUser1)
@@ -157,7 +159,7 @@ describe("API Report", () => {
       expect(response.body).toHaveProperty("isSolved", expect.any(Boolean));
     });
 
-    test.only("Add report failed because no access_token was included", async () => {
+    test("Add report failed because no access_token was included", async () => {
       const response = await request(app)
         .post(`/reports/${reportedId}`)
         // .set("access_token", tokenUser1)
@@ -170,7 +172,7 @@ describe("API Report", () => {
       expect(response.body).toHaveProperty("message", "Invalid token");
     });
 
-    test.only("Add report failed because reported user not found", async () => {
+    test("Add report failed because reported user not found", async () => {
       let wrongReportedId = 9999;
       const response = await request(app)
         .post(`/reports/${wrongReportedId}`)
@@ -186,7 +188,7 @@ describe("API Report", () => {
   });
 
   describe("UPDATE /reports/:id", () => {
-    test.only("Update report success", async () => {
+    test("Update report success", async () => {
       const response = await request(app)
         .patch(`/reports/${reportId}`)
         .set("access_token", tokenAdmin);
@@ -195,7 +197,7 @@ describe("API Report", () => {
       expect(response.body).toHaveProperty("message", expect.any(String));
     });
 
-    test.only("Update report failed because no access_token was included", async () => {
+    test("Update report failed because no access_token was included", async () => {
       const response = await request(app).patch(`/reports/${reportId}`);
       // .set("access_token", tokenAdmin)
 
@@ -203,14 +205,14 @@ describe("API Report", () => {
       expect(response.body).toHaveProperty("message", "Invalid token");
     });
 
-    test.only("Update report failed because invalid report id", async () => {
-      const wrongId = 999999;
+    test("Update report failed because invalid report id", async () => {
+      const wrongId = 9999;
       const response = await request(app)
         .patch(`/reports/${wrongId}`)
         .set("access_token", tokenAdmin);
 
       expect(response.status).toBe(404);
-      expect(response.body).toHaveProperty("message", "Data not found");
+      expect(response.body).toHaveProperty("message", "Report not found");
     });
   });
 });

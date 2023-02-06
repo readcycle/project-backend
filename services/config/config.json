@@ -9,7 +9,7 @@
   "test": {
     "username": "postgres",
     "password": "postgres",
-    "database": "dev_readcycle_test",
+    "database": "readcycle_test",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },

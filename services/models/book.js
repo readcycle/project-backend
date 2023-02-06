@@ -10,12 +10,28 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Book.belongsTo(models.Genre);
+      Book.hasMany(models.Post);
+      Book.hasMany(models.Bid);
     }
   }
   Book.init(
     {
-      title: DataTypes.STRING,
-      author: DataTypes.STRING,
+      title: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: { msg: "Title is required" },
+          notNull: { msg: "Title is required" },
+        },
+      },
+      author: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: { msg: "Author is required" },
+          notNull: { msg: "Author is required" },
+        },
+      },
       GenreId: DataTypes.INTEGER,
     },
     {

@@ -5,26 +5,12 @@ const { User, Sequelize, sequelize } = require("../models");
 class UserController {
   static async getAllUsers(req, res, next) {
     try {
-      const { queryLoc, distance = 1000 } = req.query;
       const optionQuery = {
         attributes: { exclude: ["password"] },
       };
-      if (queryLoc) {
-        const [latitude, longitude] = queryLoc.split(",");
-        if (!latitude) throw { name: "empty_latitude" };
-        if (!longitude) throw { name: "empty_longitude" };
-        optionQuery.where = sequelize.where(
-          sequelize.fn(
-            "ST_DWithin",
-            sequelize.col("location"),
-            sequelize.fn("ST_GeomFromText", `POINT(${longitude} ${latitude})`),
-            distance,
-            true
-          ),
-          true
-        );
-      }
-      const data = await User.findAll(optionQuery);
+
+      const data = await User.findAll();
+
       res.status(200).json(data);
     } catch (error) {
       next(error);
@@ -39,6 +25,7 @@ class UserController {
       });
       // console.log(data);
       if (!data) throw { name: "not_found" };
+
       res.status(200).json(data);
     } catch (error) {
       next(error);
@@ -59,7 +46,9 @@ class UserController {
         favoriteBook,
         favoriteGenre,
       });
-      // await data.save();
+      const { isNewRecord } = await data.save();
+      if (!isNewRecord) throw { name: "email_edit_fail" };
+      console.log(isNewRecord);
       res
         .status(200)
         .json({ message: `Success edit user profile with id : ${id}` });
@@ -74,7 +63,7 @@ class UserController {
       const data = await User.findByPk(id);
       if (!data) throw { name: "not_found" };
       data.set({
-        isBanned: !data.isBanned,
+        isBanned: true,
       });
       await data.save();
       res.status(200).json({
@@ -114,12 +103,14 @@ class UserAuthenticationController {
         favoriteGenre,
         favoriteBook,
       } = req.body;
+
       const longitude = 106.88436870344368;
       const latitute = -6.2082580226240776;
       const userLocation = Sequelize.fn(
         "ST_GeomFromText",
         `POINT(${longitude} ${latitute})`
       );
+
       const data = await User.create({
         fullname,
         email,

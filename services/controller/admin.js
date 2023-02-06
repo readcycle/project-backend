@@ -28,7 +28,7 @@ class Administrator {
       if (!validPwd) throw { name: "wrong_email_password" };
 
       res.status(200).json({
-        access_token: tokenize({ id: admin.id, email }),
+        access_token: tokenize({ id: admin.id, email: admin.email }),
         email: admin.email,
       });
     } catch (error) {
