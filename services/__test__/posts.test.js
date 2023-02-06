@@ -9,7 +9,7 @@ beforeAll(() => {
   jest.restoreAllMocks();
 });
 
-describe.skip("Post Endpoint Test", () => {
+describe("Post Endpoint Test", () => {
   test("GET /posts => return array of post", async () => {
     const response = await request(app).get("/posts");
 
@@ -155,7 +155,6 @@ describe.skip("Post Endpoint Test", () => {
 
   test("PATCH /posts/:id => return 404 not found", async () => {
     const response = await request(app).patch("/posts/999");
-    console.log(response);
 
     expect(response.status).toBe(404);
     expect(response.body).toBeInstanceOf(Object);

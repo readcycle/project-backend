@@ -11,7 +11,7 @@ const admin1 = {
 //   await Admin.destroy({ truncate: true, cascade: true, restartIdentity: true });
 // });
 
-describe.skip("API Admin", () => {
+describe("API Admin", () => {
   describe("POST /admins/register", () => {
     test("Register success", async () => {
       const response = await request(app).post("/admins/register").send(admin1);

@@ -26,8 +26,6 @@ class Administrator {
       // const validPwd = comparePwd(password, admin.password)
       const validPwd = funcValidateHash(admin.password, password);
       if (!validPwd) throw { name: "wrong_email_password" };
-      console.log(admin);
-      console.log(validPwd);
 
       res.status(200).json({
         access_token: tokenize({ id: admin.id, email: admin.email }),

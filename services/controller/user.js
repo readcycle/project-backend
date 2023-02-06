@@ -5,24 +5,12 @@ const { User, Sequelize, sequelize } = require("../models");
 class UserController {
   static async getAllUsers(req, res, next) {
     try {
-      const { queryLoc, distance = 1000 } = req.query;
       const optionQuery = {
         attributes: { exclude: ["password"] },
       };
-      if (queryLoc) {
-        const [latitute, longitude] = queryLoc.split(",");
-        optionQuery.where = sequelize.where(
-          sequelize.fn(
-            "ST_DWithin",
-            sequelize.col("location"),
-            sequelize.fn("ST_GeomFromText", `POINT(${longitude} ${latitute})`),
-            distance,
-            true
-          ),
-          true
-        );
-      }
-      const data = await User.findAll(optionQuery);
+
+      const data = await User.findAll();
+
       res.status(200).json(data);
     } catch (error) {
       next(error);
@@ -50,16 +38,14 @@ class UserController {
         req.body;
       const data = await User.findByPk(id);
       if (!data) throw { name: "not_found" };
-      data.set({
+      await data.update({
         fullname,
         phoneNumber,
         city,
         favoriteBook,
         favoriteGenre,
       });
-      const { isNewRecord } = await data.save();
-      if (!isNewRecord) throw { name: "email_edit_fail" };
-      console.log(isNewRecord);
+
       res
         .status(200)
         .json({ message: `Success edit user profile with id : ${id}` });
@@ -114,12 +100,14 @@ class UserAuthenticationController {
         favoriteGenre,
         favoriteBook,
       } = req.body;
+
       const longitude = 106.88436870344368;
       const latitute = -6.2082580226240776;
       const userLocation = Sequelize.fn(
         "ST_GeomFromText",
         `POINT(${longitude} ${latitute})`
       );
+
       const data = await User.create({
         fullname,
         email,

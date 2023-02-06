@@ -9,7 +9,7 @@ beforeAll(() => {
   jest.restoreAllMocks();
 });
 
-describe.skip("Bids Endpoint Test", () => {
+describe("Bids Endpoint Test", () => {
   it("GET /bids => return array of bids", async () => {
     const response = await request(app).get("/bids");
 
