@@ -1,11 +1,39 @@
+const { Op } = require("sequelize");
 const imageKit = require("../helper/imageKit");
-const { Post, User, Genre, Book } = require("../models");
+const { Post, User, Genre, Book, sequelize } = require("../models");
 
 class PostController {
   static async find(req, res, next) {
-    const { search, genre, user } = req.query;
+    const { search, genre, user, long, lat, isClosed } = req.query;
+    let option = {
+      include: [
+        { model: User, attributes: ["fullname"] },
+        {
+          model: Book,
+          attributes: ["title", "author"],
+          include: [{ model: Genre, attributes: ["name"] }],
+        },
+      ],
+    };
+    if (search)
+      option.include[1].where = { title: { [Op.iLike]: `%${search}%` } };
+    if (genre) option.include[1].where = { GenreId: +genre };
+    if (user) option.include[0].where = { id: +user };
+    if (long && lat)
+      option.include[0].where = sequelize.where(
+        sequelize.fn(
+          "ST_DWithin",
+          sequelize.col("location"),
+          sequelize.fn("ST_GeomFromText", `POINT(${long} ${lat})`),
+          1000,
+          true
+        ),
+        true
+      );
+    if (isClosed === "false") option.where = { isClosed: false };
+
     try {
-      const posts = await Post.findAll();
+      const posts = await Post.findAll(option);
 
       res.status(200).json(posts);
     } catch (error) {
@@ -26,40 +54,45 @@ class PostController {
   }
 
   static async create(req, res, next) {
-    const { condition, description, UserId, BookId, imageUrl } = req.body;
+    const { condition, description, BookId } = req.body;
     const { file } = req;
+    const { id } = req.user;
+    const UserId = id;
     try {
-      // if (!file) throw { name: "image_not_found" };
+      if (!file) throw { name: "image_not_found" };
 
-      // const { err, response } = imageKit.upload({
-      //   file: file.buffer.toString("base64"),
-      //   fileName: Date.now() + "-" + file.fieldname + ".png",
-      //   folder: "images_posts",
-      // });
+      imageKit.upload(
+        {
+          file: file.buffer.toString("base64"),
+          fileName: Date.now() + "-" + file.fieldname + ".png",
+          folder: "images_posts",
+        },
+        async (err, response) => {
+          if (err) throw { name: "image_not_found" };
 
-      // if (err) throw { name: "image_not_found" };
+          const imageUrl = imageKit.url({
+            src: response.url,
+            transformation: [
+              {
+                quality: "80",
+                format: "png",
+                focus: "auto",
+              },
+            ],
+          });
 
-      // const imageUrl = imageKit.url({
-      //   src: url,
-      //   transformation: [
-      //     {
-      //       quality: "80",
-      //       format: "png",
-      //       focus: "auto",
-      //     },
-      //   ],
-      // });
+          const newPost = await Post.create({
+            BookId,
+            condition,
+            description,
+            UserId,
+            isClosed: false,
+            imageUrl,
+          });
 
-      const newPost = await Post.create({
-        BookId,
-        condition,
-        description,
-        UserId,
-        isClosed: false,
-        imageUrl,
-      });
-
-      res.status(201).json(newPost);
+          res.status(201).json(newPost);
+        }
+      );
     } catch (error) {
       next(error);
     }

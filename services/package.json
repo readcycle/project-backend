@@ -7,7 +7,8 @@
     "test": "jest --verbose --runInBand --forceExit --coverage",
     "dev": "nodemon ./bin/www",
     "start": "node ./bin/www",
-    "reset": "sequelize db:migrate:undo:all --env test && sequelize db:migrate --env test && sequelize db:seed:all --env test"
+    "reset": "sequelize db:migrate:undo:all --env test && sequelize db:migrate --env test && sequelize db:seed:all --env test",
+    "resetDev": "sequelize db:migrate:undo:all && sequelize db:migrate && sequelize db:seed:all"
   },
   "repository": {
     "type": "git",
