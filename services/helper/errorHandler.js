@@ -71,6 +71,16 @@ const funcErrorHandler = (err, req, res, next) => {
     message = "Report not found";
   }
 
+  if (err.name === "empty_latitude") {
+    code = 400;
+    message = "Latitude param cannot be empty";
+  }
+
+  if (err.name === "empty_longitude") {
+    code = 400;
+    message = "Longitude param cannot be empty";
+  }
+
   res.status(code).json({ message });
 };
 

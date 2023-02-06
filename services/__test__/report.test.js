@@ -16,7 +16,7 @@ const adminSeed = {
 
 const user1Seed = {
   fullname: "User Test 1",
-  email: "userTest1@mail.com",
+  email: "manusia1@mail.com",
   password: "userTest1",
   phoneNumber: "888888",
   city: "Jakarta",
@@ -26,7 +26,7 @@ const user1Seed = {
 
 const user2Seed = {
   fullname: "User Test 2",
-  email: "userTest2@mail.com",
+  email: "manusia2@mail.com",
   password: "userTest2",
   phoneNumber: "888888",
   city: "Bandung",
@@ -67,7 +67,7 @@ afterAll(async () => {
   // await Admin.destroy({ truncate: true, cascade: true, restartIdentity: true });
 });
 
-describe.skip("API Report", () => {
+describe("API Report", () => {
   describe("GET /reports", () => {
     test("Get list reports success", async () => {
       const response = await request(app)

@@ -26,7 +26,7 @@ beforeAll(async () => {
 //     await Admin.destroy({ truncate: true, cascade: true, restartIdentity: true })
 // })
 
-describe.skip("API Genre", () => {
+describe("API Genre", () => {
   describe("GET /genres", () => {
     test.only("Get list genres success", async () => {
       const response = await request(app).get("/genres");
