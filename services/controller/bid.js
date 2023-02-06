@@ -1,9 +1,25 @@
-const { Bid } = require("../models");
+const { Bid, User, Book, Genre } = require("../models");
 
 class BidController {
   static async getAllBids(req, res, next) {
     const { user, post } = req.query;
-    let options = { where: {} };
+    let options = {
+      where: {},
+      include: [
+        {
+          model: User,
+          attributes: ["id", "fullname", "email"],
+        },
+        {
+          model: Book,
+          attributes: ["id", "title", "author"],
+          include: {
+            model: Genre,
+            attributes: ["id", "name"],
+          },
+        },
+      ],
+    };
     try {
       if (user) options.where = { UserId: user };
       if (post) options.where = { PostId: post };
