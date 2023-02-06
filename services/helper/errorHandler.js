@@ -57,17 +57,17 @@ const funcErrorHandler = (err, req, res, next) => {
   }
 
   if (err.name === "user_not_found") {
-    code = 401;
+    code = 404;
     message = "User not found";
   }
 
   if (err.name === "genre_not_found") {
-    code = 401;
+    code = 404;
     message = "Genre not found";
   }
 
   if (err.name === "report_not_found") {
-    code = 401;
+    code = 404;
     message = "Report not found";
   }
 

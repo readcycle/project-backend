@@ -27,56 +27,58 @@ afterAll(async () => {
 });
 
 describe("API Genre", () => {
-  describe("GET /genres", () => {
-    test.only("Get list genres success", async () => {
-      const response = await request(app)
-        .get("/genres")
-        .set("access_token", tokenAdmin);
+    describe("GET /genres", () => {
+        test.only("Get list genres success", async () => {
+            const response = await request(app)
+            .get("/genres")
+            .set("access_token", tokenAdmin)
 
-      expect(response.status).toBe(200);
-      expect(response.body).toBeInstanceOf(Array);
-      expect(response.body.length).toBeGreaterThan(0);
-    });
+            expect(response.status).toBe(200)
+            expect(response.body).toBeInstanceOf(Array)
+            expect(response.body.length).toBeGreaterThan(0);
+        })
 
-    test.only("Get list genres failed because no access_token was included", async () => {
-      const response = await request(app).get("/genres");
-      // .set("access_token", tokenAdmin)
+        test.only("Get list genres failed because no access_token was included", async () => {
+            const response = await request(app)
+            .get("/genres")
+            // .set("access_token", tokenAdmin)
 
-      expect(response.status).toBe(401);
-      expect(response.body).toHaveProperty("message", "Invalid token");
-    });
-  });
+            expect(response.status).toBe(401)
+            expect(response.body).toHaveProperty("message", "Invalid token")
+        })
+    })
 
-  describe("GET /genres/:id", () => {
-    test.only("Get genre by id success", async () => {
-      const response = await request(app)
-        .get(`/genres/${genreId}`)
-        .set("access_token", tokenAdmin);
+    describe("GET /genres/:id", () => {
+        test.only("Get genre by id success", async () => {
+            const response = await request(app)
+            .get(`/genres/${genreId}`)
+            .set("access_token", tokenAdmin)
 
-      expect(response.status).toBe(200);
-      expect(response.body).toBeInstanceOf(Object);
-      expect(response.body).toHaveProperty("id", expect.any(Number));
-      expect(response.body).toHaveProperty("name", expect.any(String));
-      expect(response.body).toHaveProperty("createdAt", expect.any(String));
-      expect(response.body).toHaveProperty("updatedAt", expect.any(String));
-    });
+            expect(response.status).toBe(200)
+            expect(response.body).toBeInstanceOf(Object)
+            expect(response.body).toHaveProperty("id", expect.any(Number))
+            expect(response.body).toHaveProperty("name", expect.any(String))
+            expect(response.body).toHaveProperty("createdAt", expect.any(String));
+            expect(response.body).toHaveProperty("updatedAt", expect.any(String));
+        })
 
-    test.only("Get genre by id failed because invalid genreId", async () => {
-      let wrongId = 9999;
-      const response = await request(app)
-        .post(`/genres/${wrongId}`)
-        .set("access_token", tokenAdmin);
+        test.only("Get genre by id failed because invalid genreId", async () => {
+            let wrongId = 9999
+            const response = await request(app)
+            .get(`/genres/${wrongId}`)
+            .set("access_token", tokenAdmin)
 
-      expect(response.status).toBe(404);
-      expect(response.body).toHaveProperty("message", "Genre not found");
-    });
+            expect(response.status).toBe(404)
+            expect(response.body).toHaveProperty("message", "Genre not found")
+        })
 
-    test.only("Get genre by id failed because no access_token was included", async () => {
-      const response = await request(app).get(`/genres/${genreId}`);
-      // .set("access_token", tokenAdmin)
+        test.only("Get genre by id failed because no access_token was included", async () => {
+            const response = await request(app)
+            .get(`/genres/${genreId}`)
+            // .set("access_token", tokenAdmin)
 
-      expect(response.status).toBe(401);
-      expect(response.body).toHaveProperty("message", "Invalid token");
-    });
-  });
-});
+            expect(response.status).toBe(401)
+            expect(response.body).toHaveProperty("message", "Invalid token")
+        })
+    })
+})
