@@ -103,13 +103,13 @@ describe("API Report", () => {
       expect(response.body).toHaveProperty("createdAt", expect.any(String));
       expect(response.body).toHaveProperty("updatedAt", expect.any(String));
       expect(response.body).toHaveProperty("isSolved", expect.any(Boolean));
-      expect(response.body).toHaveProperty("Reporter", expect.any(Object));
-      expect(response.body.Reporter).toHaveProperty(
+      expect(response.body).toHaveProperty("Issuer", expect.any(Object));
+      expect(response.body.Issuer).toHaveProperty(
         "fullname",
         expect.any(String)
       );
-      expect(response.body).toHaveProperty("Reported", expect.any(Object));
-      expect(response.body.Reported).toHaveProperty(
+      expect(response.body).toHaveProperty("Victim", expect.any(Object));
+      expect(response.body.Victim).toHaveProperty(
         "fullname",
         expect.any(String)
       );
@@ -204,13 +204,13 @@ describe("API Report", () => {
     });
 
     test.only("Update report failed because invalid report id", async () => {
-      const wrongId = 999999;
+      const wrongId = 9999;
       const response = await request(app)
         .patch(`/reports/${wrongId}`)
         .set("access_token", tokenAdmin);
 
       expect(response.status).toBe(404);
-      expect(response.body).toHaveProperty("message", "Data not found");
+      expect(response.body).toHaveProperty("message", "Report not found");
     });
   });
 });
