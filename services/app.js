@@ -1,9 +1,9 @@
 if (process.env.NODE_ENV !== "production") {
-    require('dotenv').config()
+  require("dotenv").config();
 }
 
 const express = require("express");
-const app = express()
+const app = express();
 const cors = require("cors");
 const router = require("./routes");
 const { funcErrorHandler } = require("./helper/errorHandler"); // ! re fix errorHandler

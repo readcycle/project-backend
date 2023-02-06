@@ -1,7 +1,6 @@
 const { Genre } = require("../models");
 
 class GenreController {
-  
   static async getGenres(req, res, next) {
     try {
       const genres = await Genre.findAll();
