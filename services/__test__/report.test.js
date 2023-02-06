@@ -56,12 +56,12 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  await Report.destroy({
-    truncate: true,
-    cascade: true,
-    restartIdentity: true,
-  });
-  await User.destroy({ truncate: true, cascade: true, restartIdentity: true });
+  // await Report.destroy({
+  //   truncate: true,
+  //   cascade: true,
+  //   restartIdentity: true,
+  // });
+  // await User.destroy({ truncate: true, cascade: true, restartIdentity: true });
   await Admin.destroy({ truncate: true, cascade: true, restartIdentity: true });
 });
 
