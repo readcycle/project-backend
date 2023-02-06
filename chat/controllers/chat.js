@@ -2,7 +2,7 @@ const Chat = require("../models/chat");
 
 class ChatController {
   static async find(req, res, next) {
-    const { id } = req.params;
+    const { id } = req.query;
     try {
       const chats = await Chat.find(id);
 
@@ -35,9 +35,10 @@ class ChatController {
   }
 
   static async update(req, res, next) {
+    const { id } = req.params;
     const { latestMsg } = req.body;
     try {
-      await Chat.update(latestMsg);
+      await Chat.update(id, latestMsg);
 
       res.status(200).json({ message: "Chat updated" });
     } catch (error) {
