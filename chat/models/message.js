@@ -21,6 +21,7 @@ class Message {
       senderId: id,
       message,
       chatId: ObjectId(chatId),
+      createdAt: new Date(),
     });
   }
 }
