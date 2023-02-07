@@ -8,7 +8,7 @@ class Chat {
 
   static async find(id) {
     return await this.chatCollection()
-      .find({ users: { $in: [id, 1] } })
+      .find({ users: { $in: [id] } })
       .toArray();
   }
 

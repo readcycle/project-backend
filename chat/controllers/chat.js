@@ -4,7 +4,7 @@ class ChatController {
   static async find(req, res, next) {
     const { id } = req.query;
     try {
-      const chats = await Chat.find(id);
+      const chats = await Chat.find(+id);
 
       res.status(200).json(chats);
     } catch (error) {
