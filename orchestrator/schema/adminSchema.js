@@ -1,5 +1,6 @@
 const axios = require('axios')
 const adminAPI = "http://localhost:3000/admins"
+const redis = require('../config/redis')
 
 const adminTypeDefs = `#graphql
     #Model
@@ -45,7 +46,9 @@ const adminResolvers = {
                     url: adminAPI + "/login",
                     data: args
                 })
+                console.log(data.access_token, '<<<<<');
 
+                await redis.set('access_token', data.access_token)
                 return data
             } catch (error) {
                 return error

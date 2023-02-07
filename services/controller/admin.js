@@ -32,6 +32,7 @@ class Administrator {
         email: admin.email,
       });
     } catch (error) {
+      console.log(error);
       next(error);
     }
   }
