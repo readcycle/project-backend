@@ -27,6 +27,7 @@ module.exports = {
           "ST_GeomFromText",
           "POINT(107.5925576773082 -6.940669415817259)"
         ),
+        avatar: "https://shotkit.com/wp-content/uploads/2021/06/cool-profile-pic-matheus-ferrero.jpeg",
         isBanned: false,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -43,6 +44,7 @@ module.exports = {
           "ST_GeomFromText",
           "POINT(106.84304125335981 -6.2418023072307625)"
         ),
+        avatar: "https://shotkit.com/wp-content/uploads/2021/06/cool-profile-pic-matheus-ferrero.jpeg",
         isBanned: false,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -59,6 +61,7 @@ module.exports = {
           "ST_GeomFromText",
           "POINT(106.8404441475624 -6.238927738616384)"
         ),
+        avatar: "https://shotkit.com/wp-content/uploads/2021/06/cool-profile-pic-matheus-ferrero.jpeg",
         isBanned: false,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -75,6 +78,7 @@ module.exports = {
           "ST_GeomFromText",
           "POINT(106.84357584501699 -6.239228771586251)"
         ),
+        avatar: "https://shotkit.com/wp-content/uploads/2021/06/cool-profile-pic-matheus-ferrero.jpeg",
         isBanned: false,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -91,6 +95,7 @@ module.exports = {
           "ST_GeomFromText",
           "POINT(106.84357584501699 -6.239228771586251)"
         ),
+        avatar: "https://shotkit.com/wp-content/uploads/2021/06/cool-profile-pic-matheus-ferrero.jpeg",
         isBanned: false,
         createdAt: new Date(),
         updatedAt: new Date(),
