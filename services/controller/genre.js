@@ -15,7 +15,7 @@ class GenreController {
     try {
       const genre = await Genre.findByPk(req.params.id);
       if (!genre) throw { name: "genre_not_found" };
-
+      
       res.status(200).json(genre);
     } catch (error) {
       next(error);
