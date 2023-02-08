@@ -18,6 +18,8 @@ module.exports = (sequelize, DataTypes) => {
 				foreignKey: "reportedId",
 				as: "Reported",
 			});
+			User.hasMany(models.Bid, {});
+			// User.hasMany(models.Post, {});
 		}
 	}
 	User.init(
