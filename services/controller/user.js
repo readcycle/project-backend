@@ -8,10 +8,7 @@ class UserController {
 			const optionQuery = {
 				attributes: { exclude: ["password"] },
 			};
-
 			const data = await User.findAll(optionQuery);
-			console.log(data);
-
 			res.status(200).json(data);
 		} catch (error) {
 			next(error);
@@ -86,7 +83,12 @@ class UserAuthenticationController {
 			const access_token = tokenize({ id: data.id, email: data.email });
 			res
 				.status(200)
-				.json({ access_token, fullname: data.fullname, id: data.id });
+				.json({
+					access_token,
+					coordinates: data.location.coordinates,
+					fullname: data.fullname,
+					id: data.id,
+				});
 		} catch (error) {
 			next(error);
 		}
@@ -94,67 +96,41 @@ class UserAuthenticationController {
 
 	static async userRegister(req, res, next) {
 		try {
-			const {
-				fullname,
-				email,
-				password,
-				phoneNumber,
-				city,
-				favoriteGenre,
-				favoriteBook,
-			} = req.body;
-			const { file } = req.file;
+			//   const {
+			// 	fullname,
+			// 	email,
+			// 	password,
+			// 	phoneNumber,
+			// 	city,
+			// 	favoriteGenre,
+			// 	favoriteBook,
+			//   } = req.body;
+			//   iya itu sengaja buat cek hasilnya dulu
+			//   kalo req terlalu gede
 
-			const longitude = 106.88436870344368;
-			const latitute = -6.2082580226240776;
-			const userLocation = Sequelize.fn(
-				"ST_GeomFromText",
-				`POINT(${longitude} ${latitute})`
-			);
+			console.log({ form: req.body, file: req.file });
 
-			if (!file) throw { name: "image_not_found" };
+			//   const longitude = 106.88436870344368;
+			//   const latitute = -6.2082580226240776;
+			//   const userLocation = Sequelize.fn(
+			// 	"ST_GeomFromText",
+			// 	`POINT(${longitude} ${latitute})`
+			//   );
 
-			imageKit.upload(
-				{
-					file: file.buffer.toString("base64"),
-					fileName: Date.now() + "-" + file.fieldname + ".png",
-					folder: "images_posts",
-				},
-				async (err, response) => {
-					if (err) throw { name: "image_not_found" };
-
-					const avatar = imageKit.url({
-						src: response.url,
-						transformation: [
-							{
-								quality: "80",
-								format: "png",
-								focus: "auto",
-							},
-						],
-					});
-
-					const data = await User.create({
-						fullname,
-						email,
-						password,
-						phoneNumber,
-						city,
-						avatar,
-						favoriteBook,
-						favoriteGenre,
-						location: userLocation,
-						isBanned: false,
-					});
-
-					console.log(data);
-
-					const { dataValues } = data;
-					const { password: pwd, updatedAt, ...userInfo } = dataValues;
-					console.log(userInfo);
-					res.status(201).json(userInfo);
-				}
-			);
+			//   const data = await User.create({
+			// 	fullname,
+			// 	email,
+			// 	password,
+			// 	phoneNumber,
+			// 	city,
+			// 	favoriteBook,
+			// 	favoriteGenre,
+			// 	location: userLocation,
+			// 	isBanned: false,
+			//   });
+			//   const { dataValues } = data;
+			//   const { password: pwd, updatedAt, ...userInfo } = dataValues;
+			res.status(201).json("HALLO");
 		} catch (error) {
 			next(error);
 		}

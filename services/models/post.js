@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Post.belongsTo(models.User);
       Post.belongsTo(models.Book);
+      Post.hasMany(models.Bid);
     }
   }
   Post.init(
