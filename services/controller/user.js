@@ -1,6 +1,6 @@
 const { funcValidateHash } = require("../helper/bcryptHandler");
 const { tokenize } = require("../helper/jwtHandler");
-const { User, Sequelize, sequelize } = require("../models");
+const { User, Sequelize, sequelize, Bid, Book, Post, Genre } = require("../models");
 
 class UserController {
 	static async getAllUsers(req, res, next) {
@@ -20,6 +20,21 @@ class UserController {
 		try {
 			const data = await User.findByPk(id, {
 				attributes: { exclude: ["password"] },
+				include: [
+					{
+						model: Bid,
+						include: [
+							// { model: Book },
+							{
+								model: Post,
+								include: [
+									{ model: User },
+									{ model: Book, include: { model: Genre } },
+								],
+							},
+						],
+					},
+				],
 			});
 			if (!data) throw { name: "not_found" };
 
@@ -81,14 +96,12 @@ class UserAuthenticationController {
 			const validPassword = funcValidateHash(data.password, password);
 			if (!validPassword) throw { name: "wrong_email_password" };
 			const access_token = tokenize({ id: data.id, email: data.email });
-			res
-				.status(200)
-				.json({
-					access_token,
-					coordinates: data.location.coordinates,
-					fullname: data.fullname,
-					id: data.id,
-				});
+			res.status(200).json({
+				access_token,
+				coordinates: data.location.coordinates,
+				fullname: data.fullname,
+				id: data.id,
+			});
 		} catch (error) {
 			next(error);
 		}
@@ -108,7 +121,7 @@ class UserAuthenticationController {
 			//   iya itu sengaja buat cek hasilnya dulu
 			//   kalo req terlalu gede
 
-			console.log({ form: req.body, file: req.file });
+			console.log({ form: req.body, file: req.file }, "this");
 
 			//   const longitude = 106.88436870344368;
 			//   const latitute = -6.2082580226240776;
