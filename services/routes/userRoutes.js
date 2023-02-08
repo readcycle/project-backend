@@ -1,8 +1,8 @@
 const {
-  UserController,
-  UserAuthenticationController,
+	UserController,
+	UserAuthenticationController,
 } = require("../controller/user");
-
+const upload = require("../middlewares/multer");
 const userRouter = require("express").Router();
 
 userRouter.get("/", UserController.getAllUsers);
