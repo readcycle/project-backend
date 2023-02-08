@@ -1,6 +1,15 @@
 const { funcValidateHash } = require("../helper/bcryptHandler");
 const { tokenize } = require("../helper/jwtHandler");
-const { User, Sequelize, sequelize, Bid, Book, Post, Genre } = require("../models");
+const {
+	User,
+	Sequelize,
+	sequelize,
+	Bid,
+	Book,
+	Post,
+	Genre,
+} = require("../models");
+const imageKit = require("../helper/imageKit");
 
 class UserController {
 	static async getAllUsers(req, res, next) {
@@ -109,41 +118,62 @@ class UserAuthenticationController {
 
 	static async userRegister(req, res, next) {
 		try {
-			//   const {
-			// 	fullname,
-			// 	email,
-			// 	password,
-			// 	phoneNumber,
-			// 	city,
-			// 	favoriteGenre,
-			// 	favoriteBook,
-			//   } = req.body;
-			//   iya itu sengaja buat cek hasilnya dulu
-			//   kalo req terlalu gede
+			const {
+				fullname,
+				email,
+				password,
+				phoneNumber,
+				city,
+				favoriteGenre,
+				favoriteBook,
+			} = req.body;
+			const { file } = req;
 
-			console.log({ form: req.body, file: req.file }, "this");
+			const longitude = 106.88436870344368;
+			const latitute = -6.2082580226240776;
 
-			//   const longitude = 106.88436870344368;
-			//   const latitute = -6.2082580226240776;
-			//   const userLocation = Sequelize.fn(
-			// 	"ST_GeomFromText",
-			// 	`POINT(${longitude} ${latitute})`
-			//   );
+			const userLocation = Sequelize.fn(
+				"ST_GeomFromText",
+				`POINT(${longitude} ${latitute})`
+			);
 
-			//   const data = await User.create({
-			// 	fullname,
-			// 	email,
-			// 	password,
-			// 	phoneNumber,
-			// 	city,
-			// 	favoriteBook,
-			// 	favoriteGenre,
-			// 	location: userLocation,
-			// 	isBanned: false,
-			//   });
-			//   const { dataValues } = data;
-			//   const { password: pwd, updatedAt, ...userInfo } = dataValues;
-			res.status(201).json("HALLO");
+			imageKit.upload(
+				{
+					file: file.buffer.toString("base64"),
+					fileName: Date.now() + "-" + file.fieldname + ".png",
+					folder: "avatar",
+				},
+				async (err, response) => {
+					if (err) throw { name: "image_not_found" };
+
+					const avatar = imageKit.url({
+						src: response.url,
+						transformation: [
+							{
+								quality: "80",
+								format: "png",
+								focus: "auto",
+							},
+						],
+					});
+
+					const data = await User.create({
+						fullname,
+						email,
+						password,
+						phoneNumber,
+						city,
+						avatar,
+						favoriteBook: "Harry Potter",
+						favoriteGenre: "Horror",
+						location: userLocation,
+						isBanned: false,
+					});
+					const { dataValues } = data;
+					const { password: pwd, updatedAt, ...userInfo } = dataValues;
+					res.status(201).json(userInfo);
+				}
+			);
 		} catch (error) {
 			next(error);
 		}

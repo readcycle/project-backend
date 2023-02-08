@@ -4,9 +4,9 @@
       "BookId": 2,
       "UserId": 4,
       "condition": 85,
-      "description": "nulla justo aliquam quis turpis eget elit sodales scelerisque mauris sit amet eros suspendisse accumsan tortor quis turpis sed ante",
+      "description": "Clayborn's writing is magnetic, witty, and expensive",
       "isClosed": false,
-      "imageUrl": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1631251689i/4214.jpg",
+      "imageUrl": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1675710465i/60604190.jpg",
       "createdAt": "2023-02-05T00:00:00Z",
       "updatedAt": "2023-02-05T00:00:00Z"
     },
@@ -14,9 +14,9 @@
       "BookId": 3,
       "UserId": 4,
       "condition": 50,
-      "description": "dui proin leo odio porttitor id consequat in consequat ut nulla sed accumsan felis ut at dolor quis odio consequat varius integer ac leo pellentesque ultrices",
+      "description": "A young woman's life seems perfect until her family goes missing. A writer lives alone with her dog and collects arcane murder statistics.",
       "isClosed": true,
-      "imageUrl": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1351051208i/1420.jpg",
+      "imageUrl": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1654704172i/61145046.jpg",
       "createdAt": "2023-02-05T00:00:00Z",
       "updatedAt": "2023-02-05T00:00:00Z"
     },
@@ -24,9 +24,9 @@
       "BookId": 1,
       "UserId": 2,
       "condition": 90,
-      "description": "est congue elementum in hac habitasse platea dictumst morbi vestibulum velit id pretium iaculis diam erat fermentum justo nec condimentum neque sapien",
+      "description": "'Locust Lane' is as perceptive as it is compulsively readable.",
       "isClosed": false,
-      "imageUrl": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1331563731i/12938.jpg",
+      "imageUrl": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1649654154i/60784263.jpg",
       "createdAt": "2023-02-05T00:00:00Z",
       "updatedAt": "2023-02-05T00:00:00Z"
     },
@@ -34,9 +34,9 @@
       "BookId": 5,
       "UserId": 4,
       "condition": 55,
-      "description": "hac habitasse platea dictumst etiam faucibus cursus urna ut tellus nulla ut erat id mauris vulputate elementum nullam varius nulla facilisi cras non velit nec nisi vulputate nonummy maecenas tincidunt",
+      "description": "Three ordinary people risk everything for a chance at redemption in this audacious, utterly gripping novel of catastrophe and survival at the end of the world, from the acclaimed author of The Chalk Man",
       "isClosed": true,
-      "imageUrl": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1546081115i/12985.jpg",
+      "imageUrl": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1673872095i/60965424.jpg",
       "createdAt": "2023-02-05T00:00:00Z",
       "updatedAt": "2023-02-05T00:00:00Z"
     },
@@ -44,46 +44,101 @@
       "BookId": 4,
       "UserId": 3,
       "condition": 60,
-      "description": "lorem ipsum dolor sit amet consectetuer adipiscing elit proin risus praesent lectus vestibulum quam sapien varius ut blandit non interdum in ante vestibulum ante ipsum primis in",
+      "description": "Nobody talks. But everybody whispers.",
       "isClosed": false,
-      "imageUrl": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1629680008i/18135.jpg",
+      "imageUrl": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1668463403i/61030532.jpg",
+      "createdAt": "2023-02-05T00:00:00Z",
+      "updatedAt": "2023-02-05T00:00:00Z"
+    },
+    {
+      "BookId": 6,
+      "UserId": 5,
+      "condition": 80,
+      "description": "3rd Series of Dreamland Billionaries",
+      "isClosed": false,
+      "imageUrl": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1675342454i/61681786.jpg",
+      "createdAt": "2023-02-05T00:00:00Z",
+      "updatedAt": "2023-02-05T00:00:00Z"
+    },
+    {
+      "BookId": 7,
+      "UserId": 1,
+      "condition": 70,
+      "description": "What makes for a happy life, a fulfilling life? A good life? According to the directors of the Harvard Study of Adult Development, the longest scientific study of happiness ever conducted, the answer to these questions may be closer than you realize.",
+      "isClosed": false,
+      "imageUrl": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1671981018i/61272271.jpg",
       "createdAt": "2023-02-05T00:00:00Z",
       "updatedAt": "2023-02-05T00:00:00Z"
     }
   ],
   "books": [
     {
-      "title": "A Summer in La Goulette",
-      "author": "Wendie Duthie",
+      "title": "Locust Lane",
+      "author": "Stephen Amidon",
       "GenreId": 1,
       "createdAt": "2023-02-05T00:00:00Z",
       "updatedAt": "2023-02-05T00:00:00Z"
     },
     {
-      "title": "Northwest Passage",
-      "author": "Tallia Delion",
+      "title": "Georgie, All Along",
+      "author": "Kate Clayborn",
       "GenreId": 2,
       "createdAt": "2023-02-05T00:00:00Z",
       "updatedAt": "2023-02-05T00:00:00Z"
     },
     {
-      "title": "Yumurta (Egg)",
-      "author": "Lissa Cavozzi",
+      "title": "Reef Road",
+      "author": "Deborah Goodrich Royce",
       "GenreId": 1,
       "createdAt": "2023-02-05T00:00:00Z",
       "updatedAt": "2023-02-05T00:00:00Z"
     },
     {
-      "title": "Bat*21",
-      "author": "Jerad Heeks",
+      "title": "Everybody Knows",
+      "author": "Jordan Harper",
       "GenreId": 1,
       "createdAt": "2023-02-05T00:00:00Z",
       "updatedAt": "2023-02-05T00:00:00Z"
     },
     {
-      "title": "3 Ninjas",
-      "author": "Candie Clutram",
+      "title": "The Drift",
+      "author": "C. J. Tudor",
       "GenreId": 1,
+      "createdAt": "2023-02-05T00:00:00Z",
+      "updatedAt": "2023-02-05T00:00:00Z"
+    },
+    {
+      "title": "Final Offer",
+      "author": "Lauren Asher",
+      "GenreId": 2,
+      "createdAt": "2023-02-05T00:00:00Z",
+      "updatedAt": "2023-02-05T00:00:00Z"
+    },
+    {
+      "title": "The Good Life",
+      "author": "Robert Waldinger",
+      "GenreId": 6,
+      "createdAt": "2023-02-05T00:00:00Z",
+      "updatedAt": "2023-02-05T00:00:00Z"
+    },
+    {
+      "title": "Waco Rising",
+      "author": "Kevin Cook",
+      "GenreId": 7,
+      "createdAt": "2023-02-05T00:00:00Z",
+      "updatedAt": "2023-02-05T00:00:00Z"
+    },
+    {
+      "title": "Northeaster",
+      "author": "Cathie Palletier",
+      "GenreId": 7,
+      "createdAt": "2023-02-05T00:00:00Z",
+      "updatedAt": "2023-02-05T00:00:00Z"
+    },
+    {
+      "title": "Chain of Thorns",
+      "author": "Cassandra Clare",
+      "GenreId": 3,
       "createdAt": "2023-02-05T00:00:00Z",
       "updatedAt": "2023-02-05T00:00:00Z"
     }
