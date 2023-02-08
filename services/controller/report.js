@@ -5,6 +5,7 @@ class ReportController {
     try {
       const { reportedId } = req.params;
       const { title, content } = req.body;
+      console.log(title, content)
 
       const reportedUser = await User.findByPk(reportedId);
       if (!reportedUser) throw { name: "user_not_found" };

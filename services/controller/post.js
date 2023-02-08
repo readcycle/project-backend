@@ -6,6 +6,7 @@ const BidController = require("./bid");
 class PostController {
 	static async find(req, res, next) {
 		const { search, genre, user, long, lat, isClosed } = req.query;
+		console.log(user, "THIZ");
 		let option = {
 			include: [
 				{ model: User, attributes: ["fullname", "avatar", "city"] },
@@ -17,15 +18,23 @@ class PostController {
 				{
 					model: Bid,
 					include: [
-						{ model: User, attributes: ["fullname", "avatar", "city"] },
-						{ model: Book, attributes: ["title", "author"], include: [{ model: Genre, attributes: ["name"] }] },
+						{ model: User, attributes: ["id", "fullname", "avatar", "city"] },
+						{
+							model: Book,
+							attributes: ["title", "author"],
+							include: [{ model: Genre, attributes: ["name"] }],
+						},
 					],
 				},
 			],
 		};
 		if (search)
-			option.include[1].where = { title: { [Op.iLike]: `%${search}%` } };
-		if (genre) option.include[1].where = { GenreId: +genre };
+			option.include[1].where = {
+				...option.include[1].where,
+				title: { [Op.iLike]: `%${search}%` },
+			};
+		if (genre)
+			option.include[1].where = { ...option.include[1].where, GenreId: +genre };
 		if (user) option.include[0].where = { id: +user };
 		if (long && lat)
 			option.include[0].where = sequelize.where(
@@ -62,11 +71,12 @@ class PostController {
 	}
 
 	static async create(req, res, next) {
-		const { condition, description, BookId } = req.body;
+		const { condition, description, title, author, GenreId } = req.body;
 		const { file } = req;
 		const { id } = req.user;
 		const UserId = id;
 		try {
+			const t = await sequelize.transaction();
 			if (!file) throw { name: "image_not_found" };
 
 			imageKit.upload(
@@ -88,20 +98,28 @@ class PostController {
 							},
 						],
 					});
-
-					const newPost = await Post.create({
-						BookId,
-						condition,
-						description,
-						UserId,
-						isClosed: false,
-						imageUrl,
+					let [book, created] = await Book.findOrCreate({
+						where: { title },
+						defaults: { title, author, GenreId },
+						transaction: t,
 					});
-
+					const newPost = await Post.create(
+						{
+							BookId: book.id,
+							condition,
+							description,
+							UserId,
+							isClosed: false,
+							imageUrl,
+						},
+						{ transaction: t }
+					);
+					await t.commit();
 					res.status(201).json(newPost);
 				}
 			);
 		} catch (error) {
+			await t.rollback();
 			next(error);
 		}
 	}
