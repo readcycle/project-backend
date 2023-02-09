@@ -5,7 +5,7 @@ class ReportController {
     try {
       const { reportedId } = req.params;
       const { title, content } = req.body;
-      console.log(title, content)
+      console.log(title, content);
 
       const reportedUser = await User.findByPk(reportedId);
       if (!reportedUser) throw { name: "user_not_found" };
@@ -27,8 +27,8 @@ class ReportController {
     try {
       const reports = await Report.findAll({
         include: [
-          { as: "Issuer", model: User, attributes: ["fullname"] },
-          { as: "Victim", model: User, attributes: ["fullname"] },
+          { as: "Issuer", model: User, attributes: ["fullname", "email"] },
+          { as: "Victim", model: User, attributes: ["fullname", "email"] },
         ],
       });
 
